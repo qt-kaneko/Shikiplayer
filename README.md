@@ -1,4 +1,4 @@
-![image](https://img.shields.io/amo/v/shikiplayer)
+[![image](https://img.shields.io/amo/v/shikiplayer?style=for-the-badge)](https://addons.mozilla.org/en-US/firefox/addon/shikiplayer/)
 
 ### Beautiful design:
 ![image](https://user-images.githubusercontent.com/100197083/159597440-9581a326-af4c-4907-969f-309f4d7aedd7.png)
