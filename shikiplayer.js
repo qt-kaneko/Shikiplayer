@@ -23,7 +23,7 @@ new MutationObserver(() => {
 
 const isAnimePageRegEx = /https?:\/\/shikimori.one\/animes\/[0-9-a-z]*$/;
 if (isAnimePageRegEx.test(window.location.href)) {
-  const idExtractorRegEx = /(?<=https?:\/\/shikimori.one\/animes\/)[0-9]*?(?=-)/;
+  const idExtractorRegEx = /(?<=https?:\/\/shikimori.one\/animes\/z?)[0-9]*?(?=-)/;
 
   const id = idExtractorRegEx.exec(location.href)[0];
 
@@ -40,6 +40,9 @@ if (isAnimePageRegEx.test(window.location.href)) {
   player.src = `https://kodikdb.com/find-player?shikimoriID=${id}`; //&season=1&only_season=true
   player.scrolling = "no";
   player.allowFullscreen = true;
+  player.onload = function() {
+    player.getElementsByClassName("serial-seasons-box")[0].remove();
+  }
   block.appendChild(player);
 
   const before = document.getElementsByClassName("b-db_entry")[0];
