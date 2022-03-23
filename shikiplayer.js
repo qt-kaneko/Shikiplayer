@@ -30,10 +30,10 @@ if (isAnimePageRegEx.test(window.location.href)) {
   const block = document.createElement("div");
   block.className = "block";
 
-  const headline = document.createElement("div");
-  headline.className = "headline";
-  headline.appendChild(document.createTextNode("СМОТРЕТЬ"))
-  block.appendChild(headline);
+  const subheadline = document.createElement("div");
+  subheadline.className = "subheadline";
+  subheadline.appendChild(document.createTextNode("СМОТРЕТЬ"))
+  block.appendChild(subheadline);
 
   const player = document.createElement("iframe");
   player.id = "player";
