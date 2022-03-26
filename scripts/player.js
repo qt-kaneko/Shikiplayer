@@ -12,9 +12,13 @@
 
 const match = isAnimePage(window.location.pathname);
 if (match) {
+  const animeId = match.groups.id;
+
+  const episode = getWatchingEpisode(animeId);
+
   const player = createPlayer();
-  player.animeId = match.groups.id;
-  player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}&episode=1`;
+  player.animeId = animeId;
+  player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}&episode=${episode}`;
 
   const options = createOptions(player);
 
@@ -27,13 +31,24 @@ if (match) {
   insertAfter(block, before);
 }
 
+function getWatchingEpisode(animeId) {
+  const request = new XMLHttpRequest();
+  request.open("GET", `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`, false);
+  request.responseType = "json";
+
+  request.send();
+
+  return ((request.response.user_rate || {}).episodes || 0) + 1;
+}
+
 function createOptions(player) {
   const options = document.createElement("div");
   options.classList = "b-options-floated mobile-phone";
 
   const kodik = document.createElement("a");
   kodik.text = "Kodik";
-  kodik.onclick = () => player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}&episode=1`;
+  kodik.onclick = () => player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
+                                                           `&episode=${getWatchingEpisode(player.animeId)}`;
   options.appendChild(kodik);
 
   return options;
