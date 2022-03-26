@@ -13,6 +13,16 @@
   return pathname.match(isAnimePageRegEx);
 }
 
+/*export*/ function getWatchingEpisode(animeId) {
+  const request = new XMLHttpRequest();
+  request.open("GET", `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`, false);
+  request.responseType = "json";
+
+  request.send();
+
+  return ((request.response.user_rate || {}).episodes || 0) + 1;
+}
+
 /*export*/ function insertAfter(newNode, existingNode) {
   existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }

@@ -8,6 +8,7 @@
 // Copyright 2022 Kaneko Qt
 
 /*import { isAnimePage } from "/scripts/helpers.js";*/
+/*import { getWatchingEpisode } from "/scripts/helpers.js";*/
 /*import { insertAfter } from "/scripts/helpers.js";*/
 
 const match = isAnimePage(window.location.pathname);
@@ -29,16 +30,6 @@ if (match) {
   const before = document.getElementsByClassName("b-db_entry")[0];
 
   insertAfter(block, before);
-}
-
-function getWatchingEpisode(animeId) {
-  const request = new XMLHttpRequest();
-  request.open("GET", `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`, false);
-  request.responseType = "json";
-
-  request.send();
-
-  return ((request.response.user_rate || {}).episodes || 0) + 1;
 }
 
 function createOptions(player) {
