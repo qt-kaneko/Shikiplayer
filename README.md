@@ -1,4 +1,5 @@
 [![image](https://img.shields.io/amo/v/shikiplayer?style=for-the-badge)](https://addons.mozilla.org/en-US/firefox/addon/shikiplayer/)
+[![image](https://img.shields.io/static/v1?label=SCRIPT&message=2.0.0&style=for-the-badge&color=blue)](https://github.com/qt-kaneko/Shikiplayer/raw/script/manifest.user.js)
 
 ### Beautiful design:
 ![image](/screenshots/1.png?raw=true)
