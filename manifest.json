@@ -6,13 +6,19 @@
 
   "description": "Adds Kodik player to shikimori.one website.",
   "icons": {
-    "1024": "icons/icon.png"
+    "128": "icons/icon128.png"
   },
 
   "content_scripts": [
     {
       "matches": ["*://shikimori.one/*"],
-      "js": ["shikiplayer.js"]
+      "js": ["scripts/helpers.js", "scripts/reloader.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://shikimori.one/*"],
+      "js": ["scripts/helpers.js", "scripts/player.js"],
+      "run_at": "document_end"
     }
   ]
 
