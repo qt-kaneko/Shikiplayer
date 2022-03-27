@@ -17,7 +17,6 @@ shikimori = function () {
   function getWatchingEpisode(animeId) {
     const request = new XMLHttpRequest();
     request.open("GET", `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`, false);
-    request.responseType = "json";
 
     request.send();
 
