@@ -12,7 +12,7 @@
 // @require https://raw.githubusercontent.com/qt-kaneko/Shikiplayer/script/scripts/reloader.js
 // @require https://raw.githubusercontent.com/qt-kaneko/Shikiplayer/script/scripts/player.js
 // @grant none
-// @version 2.2.2
+// @version 2.2.3
 // @copyright 2022, Kaneko Qt
 // @license GPL-3.0-or-later; https://www.gnu.org/licenses/gpl-3.0.txt
 // ==/UserScript==
