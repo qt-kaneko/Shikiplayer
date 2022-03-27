@@ -1,0 +1,17 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Publish
+        run: |
+          cp ${{ github.repository }}.manifest.json ${{ github.workspace }}
+          cp ${{ github.repository }}.media.icons.icon128.png ${{ github.workspace }}
+          cp ${{ github.repository }}.scripts ${{ github.workspace }}
