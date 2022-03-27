@@ -7,6 +7,8 @@
 // You should have received a copy of the GNU General Public License along with Shikiplayer. If not, see <https://www.gnu.org/licenses/>.
 // Copyright 2022 Kaneko Qt
 
+/*import { config } from "../config.js";*/
+
 /*import { shikimori } from "./helpers/shikimori.js";*/
 /*import { helpers } from "./helpers/helpers.js";*/
 
@@ -20,7 +22,8 @@
     const player = createPlayer();
     player.animeId = animeId;
     player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
-                                       `&episode=${episode}`;
+                                       `&episode=${episode}` +
+                                       `&poster=${config.poster}`;
 
     const options = createOptions(player);
 
@@ -40,7 +43,8 @@
     const kodik = document.createElement("a");
     kodik.text = "Kodik";
     kodik.onclick = () => player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
-                                                             `&episode=${shikimori.getWatchingEpisode(player.animeId)}`;
+                                                             `&episode=${shikimori.getWatchingEpisode(player.animeId)}` +
+                                                             `&poster=${config.poster}`;
     options.appendChild(kodik);
 
     return options;

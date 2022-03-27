@@ -18,7 +18,7 @@
     },
     {
       "matches": ["*://shikimori.one/*"],
-      "js": ["./scripts/helpers/helpers.js", "./scripts/helpers/shikimori.js",
+      "js": ["./config.js", "./scripts/helpers/helpers.js", "./scripts/helpers/shikimori.js",
              "./scripts/player.js"],
       "run_at": "document_end"
     }
