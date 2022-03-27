@@ -15,5 +15,6 @@ jobs:
           name: publish
           path: |
             ${{ github.workspace }}/manifest.json
+            ${{ github.workspace }}/config.js
             ${{ github.workspace }}/scripts
             ${{ github.workspace }}/media/icons/icon128.png
