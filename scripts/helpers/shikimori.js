@@ -7,22 +7,26 @@
 // You should have received a copy of the GNU General Public License along with Shikiplayer. If not, see <https://www.gnu.org/licenses/>.
 // Copyright 2022 Kaneko Qt
 
-/*export*/ function isAnimePage(pathname) {
-  const isAnimePageRegEx = /\/animes\/z?(?<id>[0-9]+)-([a-z0-9]+-?)+$/;
+shikimori = function () {
+  function isAnimePage(pathname) {
+    const isAnimePageRegEx = /\/animes\/z?(?<id>[0-9]+)-([a-z0-9]+-?)+$/;
 
-  return pathname.match(isAnimePageRegEx);
-}
+    return pathname.match(isAnimePageRegEx);
+  }
 
-/*export*/ function getWatchingEpisode(animeId) {
-  const request = new XMLHttpRequest();
-  request.open("GET", `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`, false);
-  request.responseType = "json";
+  function getWatchingEpisode(animeId) {
+    const request = new XMLHttpRequest();
+    request.open("GET", `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`, false);
+    request.responseType = "json";
 
-  request.send();
+    request.send();
 
-  return ((request.response.user_rate || {}).episodes || 0) + 1;
-}
+    return ((request.response.user_rate || {}).episodes || 0) + 1;
+  }
 
-/*export*/ function insertAfter(newNode, existingNode) {
-  existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
-}
+  return {
+    isAnimePage: isAnimePage,
+    
+    getWatchingEpisode: getWatchingEpisode
+  }
+}();

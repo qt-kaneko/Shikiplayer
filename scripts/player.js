@@ -7,74 +7,76 @@
 // You should have received a copy of the GNU General Public License along with Shikiplayer. If not, see <https://www.gnu.org/licenses/>.
 // Copyright 2022 Kaneko Qt
 
-/*import { isAnimePage } from "/scripts/helpers.js";*/
-/*import { getWatchingEpisode } from "/scripts/helpers.js";*/
-/*import { insertAfter } from "/scripts/helpers.js";*/
+/*import { shikimori } from "./helpers/shikimori.js";*/
+/*import { helpers } from "./helpers/helpers.js";*/
 
-const match = isAnimePage(window.location.pathname);
-if (match) {
-  const animeId = match.groups.id;
+(function () {
+  const match = shikimori.isAnimePage(window.location.pathname);
+  if (match) {
+    const animeId = match.groups.id;
 
-  const episode = getWatchingEpisode(animeId);
+    const episode = shikimori.getWatchingEpisode(animeId);
 
-  const player = createPlayer();
-  player.animeId = animeId;
-  player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}&episode=${episode}`;
+    const player = createPlayer();
+    player.animeId = animeId;
+    player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
+                                       `&episode=${episode}`;
 
-  const options = createOptions(player);
+    const options = createOptions(player);
 
-  const subheadline = createSubheadline();
+    const subheadline = createSubheadline();
 
-  const block = createBlock(options, subheadline, player);
+    const block = createBlock(options, subheadline, player);
 
-  const before = document.getElementsByClassName("b-db_entry")[0];
+    const before = document.getElementsByClassName("b-db_entry")[0];
 
-  insertAfter(block, before);
-}
+    helpers.insertAfter(block, before);
+  }
 
-function createOptions(player) {
-  const options = document.createElement("div");
-  options.classList = "b-options-floated mobile-phone";
+  function createOptions(player) {
+    const options = document.createElement("div");
+    options.classList = "b-options-floated mobile-phone";
 
-  const kodik = document.createElement("a");
-  kodik.text = "Kodik";
-  kodik.onclick = () => player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
-                                                           `&episode=${getWatchingEpisode(player.animeId)}`;
-  options.appendChild(kodik);
+    const kodik = document.createElement("a");
+    kodik.text = "Kodik";
+    kodik.onclick = () => player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
+                                                             `&episode=${shikimori.getWatchingEpisode(player.animeId)}`;
+    options.appendChild(kodik);
 
-  return options;
-}
+    return options;
+  }
 
-function createSubheadline() {
-  const subheadline = document.createElement("div");
-  subheadline.className = "subheadline";
-  subheadline.appendChild(document.createTextNode("смотреть"))
+  function createSubheadline() {
+    const subheadline = document.createElement("div");
+    subheadline.className = "subheadline";
+    subheadline.appendChild(document.createTextNode("смотреть"))
 
-  return subheadline;
-}
+    return subheadline;
+  }
 
-function createPlayer() {
-  const player = document.createElement("iframe");
-  player.width = "100%";
-  player.scrolling = "no";
-  player.allowFullscreen = true;
+  function createPlayer() {
+    const player = document.createElement("iframe");
+    player.width = "100%";
+    player.scrolling = "no";
+    player.allowFullscreen = true;
 
-  new ResizeObserver(() => {
-    player.height = 9 * player.clientWidth / 16 // Calculate to fit 16:9
-  }).observe(player);
+    new ResizeObserver(() => {
+      player.height = 9 * player.clientWidth / 16 // Calculate to fit 16:9
+    }).observe(player);
 
-  return player;
-}
+    return player;
+  }
 
-function createBlock(options, subheadline, player) {
-  const block = document.createElement("div");
-  block.className = "block";
+  function createBlock(options, subheadline, player) {
+    const block = document.createElement("div");
+    block.className = "block";
 
-  block.appendChild(options);
+    block.appendChild(options);
 
-  block.appendChild(subheadline);
+    block.appendChild(subheadline);
 
-  block.appendChild(player);
+    block.appendChild(player);
 
-  return block;
-}
+    return block;
+  }
+})();

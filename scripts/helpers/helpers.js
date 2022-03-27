@@ -7,20 +7,12 @@
 // You should have received a copy of the GNU General Public License along with Shikiplayer. If not, see <https://www.gnu.org/licenses/>.
 // Copyright 2022 Kaneko Qt
 
-/*import { shikimori } from "./helpers/shikimori.js";*/
+helpers = function() {
+  function insertAfter(newNode, existingNode) {
+    existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
+  }
 
-(function () {
-  let lastPathname = window.location.pathname;
-
-  new MutationObserver(() => {
-    const pathname = window.location.pathname;
-
-    if (pathname != lastPathname) {
-      lastPathname = pathname;
-
-      if (shikimori.isAnimePage(pathname)) {
-        location.reload(); // Make shikimori reload f@cking page when it changes (҂｀ﾛ´)凸
-      }
-    }
-  }).observe(document, { subtree: true, childList: true })
-})();
+  return {
+    insertAfter: insertAfter
+  }
+}();
