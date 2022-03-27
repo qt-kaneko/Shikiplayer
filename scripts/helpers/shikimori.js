@@ -9,7 +9,7 @@
 
 shikimori = function () {
   function isAnimePage(pathname) {
-    const isAnimePageRegEx = /\/animes\/z?(?<id>[0-9]+)-([a-z0-9]+-?)+$/;
+    const isAnimePageRegEx = /\/animes\/[a-z]?(?<id>[0-9]+)-([a-z0-9]+-?)+$/;
 
     return pathname.match(isAnimePageRegEx);
   }
