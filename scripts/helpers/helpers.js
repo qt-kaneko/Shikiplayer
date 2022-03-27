@@ -7,7 +7,7 @@
 // You should have received a copy of the GNU General Public License along with Shikiplayer. If not, see <https://www.gnu.org/licenses/>.
 // Copyright 2022 Kaneko Qt
 
-const helpers = function () {
+helpers = function() {
   function insertAfter(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
   }

@@ -7,7 +7,7 @@
 // You should have received a copy of the GNU General Public License along with Shikiplayer. If not, see <https://www.gnu.org/licenses/>.
 // Copyright 2022 Kaneko Qt
 
-const shikimori = function () {
+shikimori = function () {
   function isAnimePage(pathname) {
     const isAnimePageRegEx = /\/animes\/z?(?<id>[0-9]+)-([a-z0-9]+-?)+$/;
 
