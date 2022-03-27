@@ -10,8 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Publish
-        run: |
-          cp ${{ github.repository }}.manifest.json ${{ github.workspace }}
-          cp ${{ github.repository }}.media.icons.icon128.png ${{ github.workspace }}
-          cp ${{ github.repository }}.scripts ${{ github.workspace }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: publish
+          path: |
+            ${{ github.workspace }}/manifest.json
+            ${{ github.workspace }}/scripts
+            ${{ github.workspace }}/media/icons/icon128.png
