@@ -19,8 +19,9 @@ shikimori = function () {
     request.open("GET", `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`, false);
 
     request.send();
+    const response = JSON.parse(request.response);
 
-    return ((request.response.user_rate || {}).episodes || 0) + 1;
+    return ((response.user_rate || {}).episodes || 0) + 1;
   }
 
   return {
