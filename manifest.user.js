@@ -2,10 +2,10 @@
 // @name Shikiplayer
 // @namespace https://github.com/qt-kaneko/Shikiplayer
 // @description Adds Kodik player to shikimori.one website.
-// @icon https://raw.github.com/qt-kaneko/Shikiplayer/script/media/icons/icon128.png
+// @icon https://raw.github.com/qt-kaneko/Shikiplayer/script/images/icons/icon128.png
 // @author Kaneko Qt
 // @homepageURL https://github.com/qt-kaneko/Shikiplayer
-// @version 2.3.0
+// @version 2.3.1
 // @copyright 2022, Kaneko Qt
 // @license GPL-3.0-or-later; https://www.gnu.org/licenses/gpl-3.0.txt
 
