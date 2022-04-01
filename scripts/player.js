@@ -59,7 +59,7 @@ class Player {
   static #createHeadline() {
     const headline = document.createElement("div");
     headline.className = "subheadline";
-    headline.appendChild(document.createTextNode("смотреть"))
+    headline.appendChild(document.createTextNode("смотреть"));
 
     return headline;
   }
@@ -71,7 +71,7 @@ class Player {
     player.allowFullscreen = true;
 
     new ResizeObserver(() => {
-      player.height = 9 * player.clientWidth / 16 // Calculate to fit 16:9
+      player.height = 9 * player.clientWidth / 16; // Calculate to fit 16:9
     }).observe(player);
 
     return player;
