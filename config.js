@@ -10,6 +10,6 @@
 "use strict"
 
 const config = {
-  poster: "//raw.github.com/qt-kaneko/Shikiplayer/chrome-opera/images/poster.jpg",
+  poster: "//raw.github.com/qt-kaneko/Shikiplayer/chrome/images/poster.jpg",
   kodikToken: "KODIK_TOKEN"
 }
