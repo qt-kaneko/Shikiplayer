@@ -2,26 +2,32 @@
 
   "manifest_version": 2,
   "name": "Shikiplayer",
-  "version": "2.2.1",
+  "version": "2.3.0",
 
-  "description": "Adds Kodik player to shikimori.one website.",
+  "description": "Adds Kodik player to shikimori.(one/org) website.",
   "icons": {
-    "128": "./media/icons/icon128.png"
+    "128": "./images/icons/icon128.png"
   },
 
   "content_scripts": [
     {
-      "matches": ["*://shikimori.one/*"],
-      "js": ["./scripts/helpers/helpers.js",
-             "./scripts/reloader.js"],
-      "run_at": "document_start"
-    },
-    {
-      "matches": ["*://shikimori.one/*"],
-      "js": ["./config.js", "./scripts/helpers/helpers.js", "./scripts/helpers/shikimori.js",
-             "./scripts/player.js"],
-      "run_at": "document_end"
-    }
-  ]
+      "matches": ["*://shikimori.one/*", "*://shikimori.org/*"],
+      "js": [
+        "./config.js",
 
+        "./scripts/helpers/helpers.js",
+        //"./scripts/helpers/kodik.js",
+        "./scripts/helpers/shikimori.js",
+
+        "./scripts/player.js"//,
+        //"./scripts/subscriptions.js",
+        //"./scripts/notifications.js"
+        ],
+      "run_at": "document_start"
+    }
+  ],
+
+  "permissions": [
+    "*://kodikapi.com/"
+  ]
 }

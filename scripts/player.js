@@ -7,58 +7,64 @@
 // You should have received a copy of the GNU General Public License along with Shikiplayer. If not, see <https://www.gnu.org/licenses/>.
 // Copyright 2022 Kaneko Qt
 
-/*import { config } from "../config.js";*/
+"use strict"
 
-/*import { shikimori } from "./helpers/shikimori.js";*/
-/*import { helpers } from "./helpers/helpers.js";*/
+class Player {
+  static {
+    console.debug("Hello from Player!");
 
-(function () {
-  const match = shikimori.isAnimePage(window.location.pathname);
-  if (match) {
-    const animeId = match.groups.id;
-
-    const episode = shikimori.getWatchingEpisode(animeId);
-
-    const player = createPlayer();
-    player.animeId = animeId;
-    player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
-                                       `&episode=${episode}` +
-                                       `&poster=${config.poster}`;
-
-    const options = createOptions(player);
-
-    const subheadline = createSubheadline();
-
-    const block = createBlock(options, subheadline, player);
-
-    const before = document.getElementsByClassName("b-db_entry")[0];
-
-    helpers.insertAfter(block, before);
+    document.addEventListener("turbolinks:load", () => this.#onViewChanged());
   }
 
-  function createOptions(player) {
+  static async #onViewChanged() {
+    const match = Shikimori.isAnimePage(window.location);
+    if (match) {
+      const animeId = match.groups.id;
+
+      const episode = Shikimori.getWatchingEpisode(animeId);
+
+      const player = this.#createPlayer();
+      player.animeId = animeId;
+      player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
+                                         `&episode=${episode}` +
+                                         `&poster=${config.poster}`;
+
+      const options = this.#createOptions(player);
+
+      const headline = this.#createHeadline();
+
+      const block = this.#createBlock(options, headline, player);
+
+      const before = document.getElementsByClassName("b-db_entry")[0];
+
+      Helpers.insertAfter(block, before);
+    }
+  }
+
+  static #createOptions(player) {
     const options = document.createElement("div");
-    options.classList = "b-options-floated mobile-phone";
+    options.className = "b-options-floated mobile-phone";
 
     const kodik = document.createElement("a");
     kodik.text = "Kodik";
-    kodik.onclick = () => player.src = `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
-                                                             `&episode=${shikimori.getWatchingEpisode(player.animeId)}` +
-                                                             `&poster=${config.poster}`;
+    kodik.onclick = () => player.src =
+      `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
+                            `&episode=${shikimori.getWatchingEpisode(player.animeId)}` +
+                            `&poster=${config.poster}`;
     options.appendChild(kodik);
 
     return options;
   }
 
-  function createSubheadline() {
-    const subheadline = document.createElement("div");
-    subheadline.className = "subheadline";
-    subheadline.appendChild(document.createTextNode("смотреть"))
+  static #createHeadline() {
+    const headline = document.createElement("div");
+    headline.className = "subheadline";
+    headline.appendChild(document.createTextNode("смотреть"))
 
-    return subheadline;
+    return headline;
   }
 
-  function createPlayer() {
+  static #createPlayer() {
     const player = document.createElement("iframe");
     player.width = "100%";
     player.scrolling = "no";
@@ -71,16 +77,16 @@
     return player;
   }
 
-  function createBlock(options, subheadline, player) {
+  static #createBlock(options, headline, player) {
     const block = document.createElement("div");
     block.className = "block";
 
     block.appendChild(options);
 
-    block.appendChild(subheadline);
+    block.appendChild(headline);
 
     block.appendChild(player);
 
     return block;
   }
-})();
+}
