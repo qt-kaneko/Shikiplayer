@@ -7,26 +7,43 @@
 // You should have received a copy of the GNU General Public License along with Shikiplayer. If not, see <https://www.gnu.org/licenses/>.
 // Copyright 2022 Kaneko Qt
 
-shikimori = function () {
-  function isAnimePage(pathname) {
+"use strict"
+
+class Shikimori {
+  static isAnimePage(location) {
     const isAnimePageRegEx = /\/animes\/[a-z]?(?<id>[0-9]+)-([a-z0-9]+-?)+$/;
 
-    return pathname.match(isAnimePageRegEx);
+    return location.pathname.match(isAnimePageRegEx);
+  }
+  static isNewsPage(location) {
+    const isNewsPageRegEx = /\/.*?\/messages\/news/;
+
+    return location.pathname.match(isNewsPageRegEx);
   }
 
-  function getWatchingEpisode(animeId) {
+  static getWatchingEpisode(animeId) {
     const request = new XMLHttpRequest();
-    request.open("GET", `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`, false);
+    request.open(
+      "GET",
+      `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`,
+      false);
 
     request.send();
     const response = JSON.parse(request.response);
 
-    return ((response.user_rate || {}).episodes || 0) + 1;
+    return (response.user_rate?.episodes || 0) + 1;
   }
 
-  return {
-    isAnimePage: isAnimePage,
-    
-    getWatchingEpisode: getWatchingEpisode
+  static getNickname() {
+    const request = new XMLHttpRequest();
+    request.open(
+      "GET",
+      `${window.location.protocol}//${window.location.hostname}/api/users/whoami`,
+      false);
+
+    request.send();
+    const response = JSON.parse(request.response);
+
+    return response.nickname;
   }
-}();
+}
