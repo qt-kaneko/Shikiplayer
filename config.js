@@ -10,6 +10,6 @@
 "use strict"
 
 const config = {
-  poster: "//raw.githubusercontent.com/qt-kaneko/Shikiplayer/firefox/images/poster.jpg",
+  poster: "//raw.github.com/qt-kaneko/Shikiplayer/firefox/images/poster.jpg",
   kodikToken: "KODIK_TOKEN"
 }
