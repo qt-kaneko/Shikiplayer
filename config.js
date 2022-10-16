@@ -10,5 +10,5 @@
 "use strict"
 
 const config = {
-  poster: "//raw.github.com/qt-kaneko/Shikiplayer/firefox/images/poster.jpg",
+  poster: "//raw.github.com/qt-kaneko/Shikiplayer/main/images/poster.jpg",
 }
