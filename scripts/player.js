@@ -49,7 +49,7 @@ class Player {
     kodik.text = "Kodik";
     kodik.onclick = () => player.src =
       `//kodik.cc/find-player?shikimoriID=${player.animeId}` +
-                            `&episode=${shikimori.getWatchingEpisode(player.animeId)}` +
+                            `&episode=${Shikimori.getWatchingEpisode(player.animeId)}` +
                             `&poster=${config.poster}`;
     options.appendChild(kodik);
 

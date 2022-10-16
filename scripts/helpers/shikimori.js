@@ -15,11 +15,6 @@ class Shikimori {
 
     return location.pathname.match(isAnimePageRegEx);
   }
-  static isNewsPage(location) {
-    const isNewsPageRegEx = /\/.*?\/messages\/news/;
-
-    return location.pathname.match(isNewsPageRegEx);
-  }
 
   static getWatchingEpisode(animeId) {
     const request = new XMLHttpRequest();
@@ -32,18 +27,5 @@ class Shikimori {
     const response = JSON.parse(request.response);
 
     return (response.user_rate?.episodes || 0) + 1;
-  }
-
-  static getNickname() {
-    const request = new XMLHttpRequest();
-    request.open(
-      "GET",
-      `${window.location.protocol}//${window.location.hostname}/api/users/whoami`,
-      false);
-
-    request.send();
-    const response = JSON.parse(request.response);
-
-    return response.nickname;
   }
 }

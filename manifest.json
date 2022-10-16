@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "Shikiplayer",
-  "version": "2.3.0",
+  "version": "3.0.2",
 
   "description": "Adds Kodik player to shikimori.(one/org) website.",
   "icons": {
@@ -16,18 +16,11 @@
         "./config.js",
 
         "./scripts/helpers/helpers.js",
-        //"./scripts/helpers/kodik.js",
         "./scripts/helpers/shikimori.js",
 
-        "./scripts/player.js"//,
-        //"./scripts/subscriptions.js",
-        //"./scripts/notifications.js"
+        "./scripts/player.js"
         ],
       "run_at": "document_start"
     }
-  ],
-
-  "permissions": [
-    "*://kodikapi.com/"
   ]
 }

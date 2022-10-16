@@ -11,5 +11,4 @@
 
 const config = {
   poster: "//raw.github.com/qt-kaneko/Shikiplayer/firefox/images/poster.jpg",
-  kodikToken: "KODIK_TOKEN"
 }
