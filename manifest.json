@@ -11,7 +11,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://shikimori.one/*", "*://shikimori.org/*"],
+      "matches": ["*://shikimori.me/*"],
       "js": [
         "./config.js",
 
