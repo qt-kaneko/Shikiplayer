@@ -10,8 +10,7 @@
 // @license GPL-3.0-or-later; https://www.gnu.org/licenses/gpl-3.0.txt
 
 
-// @match *://shikimori.one/*
-// @match *://shikimori.org/*
+// @match *://shikimori.me/*
 
 // @require https://raw.github.com/qt-kaneko/Shikiplayer/main/config.js
 
