@@ -1,17 +1,17 @@
 {
 
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Shikiplayer",
-  "version": "3.0.2",
+  "version": "3.0.3",
 
-  "description": "Adds Kodik player to shikimori.(one/org) website.",
+  "description": "Adds Kodik player to shikimori.me website.",
   "icons": {
     "128": "./images/icons/icon128.png"
   },
 
   "content_scripts": [
     {
-      "matches": ["*://shikimori.one/*", "*://shikimori.org/*"],
+      "matches": ["*://shikimori.me/*"],
       "js": [
         "./config.js",
 
