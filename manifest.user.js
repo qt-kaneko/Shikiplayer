@@ -5,7 +5,7 @@
 // @icon https://raw.github.com/qt-kaneko/Shikiplayer/main/images/icons/icon128.png
 // @author Kaneko Qt
 // @homepageURL https://github.com/qt-kaneko/Shikiplayer
-// @version 3.0.2
+// @version 3.0.3
 // @copyright 2022, Kaneko Qt
 // @license GPL-3.0-or-later; https://www.gnu.org/licenses/gpl-3.0.txt
 
