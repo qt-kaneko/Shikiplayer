@@ -36,6 +36,8 @@ class Shikiplayer
     this.#userId = Shikimori.getUserId();
 
     document.addEventListener(`turbolinks:load`, async () => await this.#onViewChanged());
+
+    log(`Loaded: User id=${this.#userId}`);
   }
 
   static async #onViewChanged()
@@ -45,10 +47,16 @@ class Shikiplayer
       this.#animeId = Number(info[`id`]);
       this.#episode = Shikimori.getWatchedEpisodes(this.#animeId);
 
-      log(`View changed:`, `Anime ID:`, this.#animeId, `Episode:`, this.#episode)
+      log(`View changed: 'anime id'=${this.#animeId}, 'episode'=${this.#episode}.`)
+
+      let episode = 0;
+      if (this.#episode !== null) episode = this.#episode;
+      else log(`Tried to load last episode but it was not found (maybe not logged-in?).`);
+
+      episode += 1;
 
       let player = this.#createPlayer();
-      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${(this.#episode ?? 0) + 1}`+
+      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${episode}`+
                                                     `&only_season=true` +
                                                     `&poster=${CONFIG.posterUrl}`;
 
@@ -60,6 +68,7 @@ class Shikiplayer
 
       insertAfter(block, before);
     }
+    else log(`View changed: Not on anime page.`)
   }
 
   /**
@@ -91,12 +100,16 @@ class Shikiplayer
     window.addEventListener(`message`, (e) => {
       if (e.data.key === `kodik_player_current_episode`)
       {
-        if (this.#userId === null) return;
+        if (this.#userId !== null)
+        {
+          /** @type {number} */
+          let episode = e.data.value.episode;
 
-        /** @type {number} */
-        let episode = e.data.value.episode;
+          Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, episode);
 
-        Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, episode);
+          log(`Saved 'last episode'=${episode}`);
+        }
+        else log(`Tried to save last episode but 'user id' was 'null'`);
       }
     });
 
