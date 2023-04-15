@@ -2,7 +2,7 @@
   "manifest_version": 3,
   
   "name": "Shikiplayer",
-  "version": "4.0.0-dev1",
+  "version": "4.0.0-dev2",
   "description": "Adds Kodik player to shikimori.me website.",
   "icons": {
     "128": "./images/icons/icon128.png"
