@@ -1,25 +1,29 @@
 {
-
   "manifest_version": 3,
-  "name": "Shikiplayer",
-  "version": "3.0.3",
-
+  
+  "name": "Sikiplayer",
+  "version": "4.0.0",
   "description": "Adds Kodik player to shikimori.me website.",
   "icons": {
     "128": "./images/icons/icon128.png"
   },
 
+  "permissions": ["scripting"],
+
   "content_scripts": [
     {
       "matches": ["*://shikimori.me/*"],
       "js": [
-        "./config.js",
+        "./scripts/CONFIG.js",
 
-        "./scripts/helpers/helpers.js",
-        "./scripts/helpers/shikimori.js",
+        "./scripts/Boost.js/debugging.js",
+        "./scripts/Boost.js/typization.js",
+        "./scripts/Boost.js/querySelector.js",
+        "./scripts/Boost.js/insertAfter.js",
 
-        "./scripts/player.js"
-        ],
+        "./scripts/Shikimori.js",
+        "./scripts/Shikiplayer.js"
+      ],
       "run_at": "document_start"
     }
   ]
