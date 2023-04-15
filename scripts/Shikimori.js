@@ -75,6 +75,9 @@ class Shikimori
     request.send(content);
   }
 
+  /**
+   * @returns {number | null}
+   */
   static getUserId()
   {
     let request = new XMLHttpRequest();
@@ -87,6 +90,6 @@ class Shikimori
     request.send();
     let response = JSON.parse(request.responseText);
 
-    return response.id;
+    return response?.id;
   }
 }

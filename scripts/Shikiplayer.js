@@ -25,7 +25,7 @@ class Shikiplayer
   /** @type {number} */
   static #episode;
 
-  /** @type {number} */
+  /** @type {number | null} */
   static #userId;
 
   static {this.#init()}
@@ -48,7 +48,7 @@ class Shikiplayer
       log(`View changed:`, `Anime ID:`, this.#animeId, `Episode:`, this.#episode)
 
       let player = this.#createPlayer();
-      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${this.#episode}`+
+      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${this.#episode + 1}`+
                                                     `&only_season=true` +
                                                     `&poster=${CONFIG.posterUrl}`;
 
@@ -87,6 +87,18 @@ class Shikiplayer
       // Calculate to fit 16:9
       player.height = `${(9 * player.clientWidth / 16)}px`;
     }).observe(player);
+
+    window.addEventListener(`message`, (e) => {
+      if (e.data.key === `kodik_player_current_episode`)
+      {
+        if (this.#userId === null) return;
+
+        /** @type {number} */
+        let episode = e.data.value.episode;
+
+        Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, episode);
+      }
+    });
 
     return player;
   }
