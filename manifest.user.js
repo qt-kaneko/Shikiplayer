@@ -19,5 +19,5 @@
 //
 // @require      https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Shikimori.js
 // @require      https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Shikiplayer.js
-// @run-at       document-start
+// @run-at       document-end
 // ==/UserScript==

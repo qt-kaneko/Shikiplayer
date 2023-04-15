@@ -19,5 +19,5 @@
 
 const CONFIG = Object.freeze({
   name: `Shikiplayer`,
-  poster: `//raw.github.com/qt-kaneko/Shikiplayer/main/images/poster.jpg`
+  posterUrl: `//raw.github.com/qt-kaneko/Shikiplayer/main/images/poster.jpg`
 });
