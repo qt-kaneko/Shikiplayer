@@ -48,7 +48,9 @@ class Shikiplayer
       log(`View changed:`, `Anime ID:`, this.#animeId, `Episode:`, this.#episode)
 
       let player = this.#createPlayer();
-      player.src = Kodik.getPlayer(this.#animeId, this.#episode);
+      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${this.#episode}`+
+                                                    `&only_season=true` +
+                                                    `&poster=${CONFIG.posterUrl}`;
 
       let headline = this.#createHeadline();
 

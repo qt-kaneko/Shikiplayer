@@ -21,15 +21,14 @@ class Kodik
 {
   /**
    * @param {number} animeId
-   * @param {number} episode
    * @returns {string} Link to player
    */
-  static getPlayer(animeId, episode)
+  static getPlayer(animeId)
   {
     let request = new XMLHttpRequest();
     request.open(
       `GET`,
-      `${window.location.protocol}://kodikapi.com/get-player?token=${CONFIG.kodikToken}&shikimoriID=${animeId}&episode=${episode}`,
+      `${window.location.protocol}//kodikapi.com/get-player?token=${CONFIG.kodikToken}&shikimoriID=${animeId}`,
       false
     );
 
