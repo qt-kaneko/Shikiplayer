@@ -48,7 +48,7 @@ class Shikimori
     request.send();
     let response = JSON.parse(request.responseText);
 
-    return response.user_rate?.episodes;
+    return response.user_rate?.episodes ?? null;
   }
 
   /**
@@ -91,6 +91,6 @@ class Shikimori
     request.send();
     let response = JSON.parse(request.responseText);
 
-    return response?.id;
+    return response?.id ?? null;
   }
 }

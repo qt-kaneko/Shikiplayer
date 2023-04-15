@@ -6,7 +6,7 @@
   "icons": {"128": "./images/icons/icon128.png"},
   "author": "Kaneko Qt",
   "homepage_url": "https://github.com/qt-kaneko/Shikiplayer",
-  "version": "4.0.0-dev9",
+  "version": "4.0.0-dev10",
 
   "content_scripts": [
     {
