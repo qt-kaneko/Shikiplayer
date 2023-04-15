@@ -7,7 +7,7 @@
 // @homepageURL  https://github.com/qt-kaneko/Shikiplayer
 // @copyright    2023, Kaneko Qt
 // @license      GPL-3.0-or-later; https://www.gnu.org/licenses/gpl-3.0.txt
-// @version      4.0.0-dev11
+// @version      4.0.0
 //
 // @updateURL    https://raw.github.com/qt-kaneko/Shikiplayer/dev/manifest.user.js
 // @downloadURL  https://raw.github.com/qt-kaneko/Shikiplayer/dev/manifest.user.js
