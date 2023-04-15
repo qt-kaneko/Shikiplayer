@@ -33,6 +33,7 @@ class Shikimori
 
   /**
    * @param {number} animeId
+   * @returns {number | null}
    */
   static getWatchedEpisodes(animeId)
   {
@@ -47,7 +48,7 @@ class Shikimori
     request.send();
     let response = JSON.parse(request.responseText);
 
-    return response.user_rate?.episodes ?? 0;
+    return response.user_rate?.episodes;
   }
 
   /**

@@ -22,7 +22,7 @@ class Shikiplayer
   /** @type {number} */
   static #animeId;
 
-  /** @type {number} */
+  /** @type {number | null} */
   static #episode;
 
   /** @type {number | null} */
@@ -48,7 +48,7 @@ class Shikiplayer
       log(`View changed:`, `Anime ID:`, this.#animeId, `Episode:`, this.#episode)
 
       let player = this.#createPlayer();
-      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${this.#episode + 1}`+
+      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${(this.#episode ?? 0) + 1}`+
                                                     `&only_season=true` +
                                                     `&poster=${CONFIG.posterUrl}`;
 
