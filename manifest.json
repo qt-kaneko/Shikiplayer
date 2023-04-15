@@ -2,7 +2,7 @@
   "manifest_version": 3,
   
   "name": "Shikiplayer",
-  "version": "4.0.0-dev4",
+  "version": "4.0.0-dev5",
   "description": "Adds Kodik player to shikimori.me website.",
   "icons": {
     "128": "./images/icons/icon128.png"
@@ -21,6 +21,7 @@
         "./scripts/Boost.js/querySelector.js",
         "./scripts/Boost.js/insertAfter.js",
 
+        "./scripts/Kodik.js",
         "./scripts/Shikimori.js",
         "./scripts/Shikiplayer.js"
       ],

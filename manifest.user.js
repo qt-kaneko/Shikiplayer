@@ -5,7 +5,7 @@
 // @icon         https://raw.github.com/qt-kaneko/Shikiplayer/dev/images/icons/icon128.png
 // @author       Kaneko Qt
 // @homepageURL  https://github.com/qt-kaneko/Shikiplayer
-// @version      4.0.0-dev4
+// @version      4.0.0-dev5
 // @copyright    2023, Kaneko Qt
 // @license      GPL-3.0-or-later; https://www.gnu.org/licenses/gpl-3.0.txt
 //
@@ -17,6 +17,7 @@
 // @require      https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Boost.js/querySelector.js
 // @require      https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Boost.js/insertAfter.js
 //
+// @require      https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Kodik.js
 // @require      https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Shikimori.js
 // @require      https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Shikiplayer.js
 // @run-at       document-end
