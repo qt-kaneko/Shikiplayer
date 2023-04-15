@@ -45,6 +45,8 @@ class Shikiplayer
       this.#animeId = Number(info[`id`]);
       this.#episode = Shikimori.getWatchedEpisodes(this.#animeId);
 
+      log(`View changed:`, `Anime ID:`, this.#animeId, `Episode:`, this.#episode)
+
       let playerContainer = this.#createPlayerContainer();
 
       let options = this.#createOptions();

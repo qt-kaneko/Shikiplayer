@@ -25,6 +25,7 @@ class Shikimori
       `${window.location.protocol}//${window.location.hostname}/api/animes/${animeId}`,
       false
     );
+    // request.setRequestHeader("Cache-Control", "no-cache, no-store, max-age=0");
 
     request.send();
     let response = JSON.parse(request.responseText);
