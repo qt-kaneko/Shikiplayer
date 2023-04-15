@@ -29,7 +29,7 @@ class Kodik
     let request = new XMLHttpRequest();
     request.open(
       `GET`,
-      `${window.location.protocol}//https://kodikapi.com/get-player?token=${CONFIG.kodikToken}&shikimoriID=${animeId}&episode=${episode}`,
+      `${window.location.protocol}://kodikapi.com/get-player?token=${CONFIG.kodikToken}&shikimoriID=${animeId}&episode=${episode}`,
       false
     );
 
