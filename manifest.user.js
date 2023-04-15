@@ -1,7 +1,6 @@
 // ==UserScript==
-// @namespace    https://github.com/qt-kaneko/Shikiplayer
-//
 // @name         Shikiplayer
+// @namespace    https://github.com/qt-kaneko/Shikiplayer
 // @description  Adds Kodik player to shikimori.me website.
 // @icon         https://raw.github.com/qt-kaneko/Shikiplayer/dev/images/icons/icon128.png
 // @author       Kaneko Qt
