@@ -17,8 +17,25 @@
 
 "use strict";
 
-const CONFIG = Object.freeze({
-  name: `Shikiplayer`,
-  posterUrl: `//raw.github.com/qt-kaneko/Shikiplayer/main/images/poster.jpg`,
-  kodikToken: `447d179e875efe44217f20d1ee2146be`
-});
+class Kodik
+{
+  /**
+   * @param {number} animeId
+   * @param {number} episode
+   * @returns {string} Link to player
+   */
+  static getPlayer(animeId, episode)
+  {
+    let request = new XMLHttpRequest();
+    request.open(
+      `GET`,
+      `${window.location.protocol}//https://kodikapi.com/get-player?token=${CONFIG.kodikToken}&shikimoriID=${animeId}&episode=${episode}`,
+      false
+    );
+
+    request.send();
+    let response = JSON.parse(request.responseText);
+
+    return response.link;
+  }
+}

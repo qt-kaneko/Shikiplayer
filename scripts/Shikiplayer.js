@@ -47,31 +47,17 @@ class Shikiplayer
 
       log(`View changed:`, `Anime ID:`, this.#animeId, `Episode:`, this.#episode)
 
-      let playerContainer = this.#createPlayerContainer();
-
-      let options = this.#createOptions();
+      let player = this.#createPlayer();
+      player.src = Kodik.getPlayer(this.#animeId, this.#episode);
 
       let headline = this.#createHeadline();
 
-      let block = this.#createBlock(options, headline, playerContainer);
+      let block = this.#createBlock(headline, player);
 
       let before = querySelector(`.b-db_entry`);
 
       insertAfter(block, before);
-
-      this.#addPlayer(playerContainer);
     }
-  }
-
-  /**
-   * @returns {HTMLDivElement}
-   */
-  static #createOptions()
-  {
-    let options = document.createElement(`div`);
-    options.className = `b-options-floated mobile-phone`;
-
-    return options;
   }
 
   /**
@@ -87,73 +73,36 @@ class Shikiplayer
   }
 
   /**
-   * @returns {HTMLDivElement}
+   * @returns {HTMLIFrameElement}
    */
-  static #createPlayerContainer()
+  static #createPlayer()
   {
-    let playerContainer = document.createElement(`div`);
-    playerContainer.id = `kodik-player`;
-    playerContainer.style.width = `100%`;
+    let player = document.createElement(`iframe`);
+    player.width = `100%`;
+    player.allowFullscreen = true;
 
     new ResizeObserver(() => {
       // Calculate to fit 16:9
-      playerContainer.style.height = `${(9 * playerContainer.clientWidth / 16)}px`;
-    }).observe(playerContainer);
+      player.height = `${(9 * player.clientWidth / 16)}px`;
+    }).observe(player);
 
-    return playerContainer;
+    return player;
   }
 
   /**
-   * @param {HTMLDivElement} options
    * @param {HTMLDivElement} headline
    * @param {HTMLDivElement} playerContainer
    * @returns {HTMLDivElement}
    */
-  static #createBlock(options, headline, playerContainer)
+  static #createBlock(headline, playerContainer)
   {
     let block = document.createElement(`div`);
     block.className = `block`;
-
-    block.appendChild(options);
 
     block.appendChild(headline);
 
     block.appendChild(playerContainer);
 
     return block;
-  }
-
-  /**
-   * @param {HTMLDivElement} playerContainer
-   */
-  static #addPlayer(playerContainer)
-  {
-    let script = document.createElement(`script`);
-    script.textContent = `
-      var kodikAddPlayers = {
-        width: "100%",
-        height: "100%",
-        shikimoriID: "${this.#animeId}",
-        episode: "${this.#episode + 1}",
-        only_season: true,
-        poster: "${CONFIG.posterUrl}"
-      };
-    
-      !function(e,n,t,r,a){r=e.createElement(n),a=e.getElementsByTagName(n)
-      [0],r.async=!0,r.src=t,a.parentNode.insertBefore(r,a)}
-      (document,"script","//kodik-add.com/add-players.min.js");
-    `;
-    
-    window.addEventListener(`message`, (e) => {
-      if (e.data.key === `kodik_player_current_episode`)
-      {
-        /** @type {number} */
-        let episode = e.data.value.episode;
-
-        Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, episode);
-      }
-    });
-
-    playerContainer.appendChild(script);
   }
 }
