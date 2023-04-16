@@ -135,7 +135,7 @@ class Shikiplayer
         let episodeTime = e.data.value;
 
         if ((this.#episodeDuration - episodeTime) < (this.#episodeDuration / 7.5))
-          if (this.#userId !== null && this.#watchedEpisodes !== null)
+          if (this.#userId !== null)
           {
             if (this.#watchedEpisodes !== this.#currentEpisode)
             {
@@ -145,7 +145,7 @@ class Shikiplayer
               log(`Player: Saved 'last episode'='${this.#watchedEpisodes}'.`);
             }
           }
-          else log(`Player: Tried to save last episode but 'user id' or 'episode' was 'null' (maybe not logged-in?).`);
+          else log(`Player: Tried to save last episode but 'user id' was 'null' (maybe not logged-in?).`);
       }
       if (e.data.key === `kodik_player_current_episode`)
       {
