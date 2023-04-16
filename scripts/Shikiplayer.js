@@ -135,7 +135,7 @@ class Shikiplayer
         /** @type {number} */
         let episodeTime = e.data.value;
 
-        if ((this.#episodeDuration - episodeTime) < (this.#episodeDuration / 7.5))
+        if ((this.#episodeDuration - episodeTime) < 3 * 60) // If < 3 minutes
           if (this.#userId !== null)
           {
             if (this.#watchedEpisodes !== this.#currentEpisode)
