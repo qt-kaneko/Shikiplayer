@@ -9,6 +9,10 @@
   "homepage_url": "https://github.com/qt-kaneko/Shikiplayer",
   "version": "4.0.0",
 
+  "browser_specific_settings": {
+    "gecko": {"id": "{e6624e6b-2351-4a1d-b7b7-c714fffee424}"}
+  },
+
   "content_scripts": [
     {
       "matches": ["*://shikimori.me/*"],

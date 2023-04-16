@@ -37,7 +37,7 @@ class Shikiplayer
 
     document.addEventListener(`turbolinks:load`, async () => await this.#onViewChanged());
 
-    log(`Loaded: User id=${this.#userId}`);
+    log(`Loaded: 'User id'='${this.#userId}'.`);
   }
 
   static async #onViewChanged()
@@ -47,11 +47,11 @@ class Shikiplayer
       this.#animeId = Number(info[`id`]);
       this.#episode = Shikimori.getWatchedEpisodes(this.#animeId);
 
-      log(`View changed: 'anime id'=${this.#animeId}, 'episode'=${this.#episode}.`)
+      log(`View changed: 'anime id'='${this.#animeId}', 'episode'='${this.#episode}'.`)
 
       let episode = 0;
       if (this.#episode !== null) episode = this.#episode;
-      else log(`Tried to load last episode but it was not found (maybe not logged-in?).`);
+      else log(`Tried to load last episode but it was 'null' (maybe not logged-in?).`);
 
       episode += 1;
 
@@ -107,9 +107,9 @@ class Shikiplayer
 
           Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, episode);
 
-          log(`Saved 'last episode'=${episode}`);
+          log(`Saved 'last episode'='${episode}'.`);
         }
-        else log(`Tried to save last episode but 'user id' was 'null'`);
+        else log(`Tried to save last episode but 'user id' was 'null' (maybe not logged-in?).`);
       }
     });
 
