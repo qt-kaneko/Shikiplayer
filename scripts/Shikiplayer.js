@@ -152,7 +152,7 @@ class Shikiplayer
         /** @type {number} */
         let episode = e.data.value.episode;
 
-        this.#watchedEpisodes = episode;
+        this.#currentEpisode = episode;
 
         log(`Player: Current episode changed, 'current episode'='${this.#watchedEpisodes}'`);
       }
