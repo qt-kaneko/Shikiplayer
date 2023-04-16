@@ -26,7 +26,7 @@ class Shikiplayer
   static #watchedEpisodes;
 
   /** @type {number} */
-  static #currentEpisode = 0;
+  static #currentEpisode;
 
   /** @type {number} */
   static #episodeDuration;
@@ -66,6 +66,7 @@ class Shikiplayer
 
       log(`View changed: 'anime id'='${this.#animeId}', 'episode'='${this.#watchedEpisodes}'.`);
 
+      this.#currentEpisode = 0;
       if (this.#watchedEpisodes !== null)
       {
         this.#currentEpisode = this.#watchedEpisodes;
@@ -154,7 +155,7 @@ class Shikiplayer
 
         this.#currentEpisode = episode;
 
-        log(`Player: Current episode changed, 'current episode'='${this.#watchedEpisodes}'`);
+        log(`Player: Current episode changed, 'current episode'='${this.#currentEpisode}'`);
       }
     });
 
