@@ -25,6 +25,9 @@ class Shikiplayer
   /** @type {number | null} */
   static #episode;
 
+  /** @type {number} */
+  static #episodeDuration;
+
   /** @type {number | null} */
   static #userId;
 
@@ -115,18 +118,37 @@ class Shikiplayer
     }).observe(player);
 
     window.addEventListener(`message`, (e) => {
+      if (e.data.key === `kodik_player_duration_update`)
+      {
+        /** @type {number} */
+        let episodeDuration = e.data.value;
+
+        this.#episodeDuration = episodeDuration;
+
+        log(`Player: Episode duration changed, 'episode duration'='${this.#episodeDuration}'.`);
+      }
+      else if (e.data.key === `kodik_player_time_update`)
+      {
+        /** @type {number} */
+        let episodeTime = e.data.value;
+
+        if ((this.#episodeDuration - episodeTime) < (this.#episodeDuration / 7.5))
+          if (this.#userId !== null && this.#episode !== null)
+          {
+            Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, this.#episode);
+
+            log(`Player: Saved 'last episode'='${this.#episode}'.`);
+          }
+          else log(`Player: Tried to save last episode but 'user id' or 'episode' was 'null' (maybe not logged-in?).`);
+      }
       if (e.data.key === `kodik_player_current_episode`)
       {
-        if (this.#userId !== null)
-        {
-          /** @type {number} */
-          let episode = e.data.value.episode;
+        /** @type {number} */
+        let episode = e.data.value.episode;
 
-          Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, episode);
+        this.#episode = episode;
 
-          log(`Player: Saved 'last episode'='${episode}'.`);
-        }
-        else log(`Player: Tried to save last episode but 'user id' was 'null' (maybe not logged-in?).`);
+        log(`Player: Current episode changed, 'current episode'='${this.#episode}'`);
       }
     });
 
