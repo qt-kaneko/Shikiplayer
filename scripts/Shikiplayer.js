@@ -28,6 +28,8 @@ class Shikiplayer
   /** @type {number | null} */
   static #userId;
 
+  static #playerId = `shikiplayer`; // Bugfix too late script load (turbolinks:load fired before script was loaded)
+
   static {this.#init()}
   static async #init()
   {
@@ -37,17 +39,26 @@ class Shikiplayer
 
     document.addEventListener(`turbolinks:load`, async () => await this.#onViewChanged());
 
-    log(`Loaded: 'User id'='${this.#userId}'.`);
+    // Bugfix too late script load (turbolinks:load fired before script was loaded)
+    await this.#onViewChanged();
+
+    log(`Loaded: 'user id'='${this.#userId}'.`);
   }
 
   static async #onViewChanged()
   {
     let info = Shikimori.isAnimePage(window.location);
     if (info !== null) {
+      if (querySelectorNull(`#${this.#playerId}`) !== null) // Bugfix too late script load (turbolinks:load fired before script was loaded)
+      {
+        log(`View changed: Player is already added, skipping.`);
+        return;
+      }
+
       this.#animeId = Number(info[`id`]);
       this.#episode = Shikimori.getWatchedEpisodes(this.#animeId);
 
-      log(`View changed: 'anime id'='${this.#animeId}', 'episode'='${this.#episode}'.`)
+      log(`View changed: 'anime id'='${this.#animeId}', 'episode'='${this.#episode}'.`);
 
       let episode = 0;
       if (this.#episode !== null) episode = this.#episode;
@@ -89,6 +100,7 @@ class Shikiplayer
   static #createPlayer()
   {
     let player = document.createElement(`iframe`);
+    player.id = this.#playerId; // Bugfix too late script load (turbolinks:load fired before script was loaded).
     player.width = `100%`;
     player.allowFullscreen = true;
 
