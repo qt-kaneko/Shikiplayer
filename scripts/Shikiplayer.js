@@ -65,9 +65,9 @@ class Shikiplayer
       {
         episode = this.#episode;
 
-        log(`Loaded 'last episode'='${episode}'.`);
+        log(`Player: Loaded 'last episode'='${episode}'.`);
       }
-      else log(`Tried to load last episode but it was 'null' (maybe not logged-in?).`);
+      else log(`Player: Tried to load last episode but it was 'null' (maybe not logged-in?).`);
 
       episode += 1;
 
@@ -124,9 +124,9 @@ class Shikiplayer
 
           Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, episode);
 
-          log(`Saved 'last episode'='${episode}'.`);
+          log(`Player: Saved 'last episode'='${episode}'.`);
         }
-        else log(`Tried to save last episode but 'user id' was 'null' (maybe not logged-in?).`);
+        else log(`Player: Tried to save last episode but 'user id' was 'null' (maybe not logged-in?).`);
       }
     });
 

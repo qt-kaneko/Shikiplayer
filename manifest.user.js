@@ -8,7 +8,7 @@
 // @homepageURL     https://github.com/qt-kaneko/Shikiplayer
 // @copyright       2023, Kaneko Qt
 // @license         GPL-3.0-or-later; https://www.gnu.org/licenses/gpl-3.0.txt
-// @version         4.0.1
+// @version         4.0.2
 //    
 // @updateURL       https://raw.github.com/qt-kaneko/Shikiplayer/dev/manifest.user.js
 // @downloadURL     https://raw.github.com/qt-kaneko/Shikiplayer/dev/manifest.user.js
@@ -24,5 +24,5 @@
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Kodik.js
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Shikimori.js
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Shikiplayer.js
-// @run-at          document-start
+// @run-at          document-end
 // ==/UserScript==
