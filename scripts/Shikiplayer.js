@@ -42,7 +42,7 @@ class Shikiplayer
     // Bugfix too late script load (turbolinks:load fired before script was loaded)
     await this.#onViewChanged();
 
-    log(`Loaded: 'user id'='${this.#userId}'.`);
+    log(`Started: 'user id'='${this.#userId}'.`);
   }
 
   static async #onViewChanged()
@@ -61,7 +61,12 @@ class Shikiplayer
       log(`View changed: 'anime id'='${this.#animeId}', 'episode'='${this.#episode}'.`);
 
       let episode = 0;
-      if (this.#episode !== null) episode = this.#episode;
+      if (this.#episode !== null)
+      {
+        episode = this.#episode;
+
+        log(`Loaded 'last episode'='${episode}'.`);
+      }
       else log(`Tried to load last episode but it was 'null' (maybe not logged-in?).`);
 
       episode += 1;
