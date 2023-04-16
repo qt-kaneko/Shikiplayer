@@ -23,7 +23,10 @@ class Shikiplayer
   static #animeId;
 
   /** @type {number | null} */
-  static #episode;
+  static #watchedEpisodes;
+
+  /** @type {number} */
+  static #currentEpisode = 0;
 
   /** @type {number} */
   static #episodeDuration;
@@ -59,23 +62,22 @@ class Shikiplayer
       }
 
       this.#animeId = Number(info[`id`]);
-      this.#episode = Shikimori.getWatchedEpisodes(this.#animeId);
+      this.#watchedEpisodes = Shikimori.getWatchedEpisodes(this.#animeId);
 
-      log(`View changed: 'anime id'='${this.#animeId}', 'episode'='${this.#episode}'.`);
+      log(`View changed: 'anime id'='${this.#animeId}', 'episode'='${this.#watchedEpisodes}'.`);
 
-      let episode = 0;
-      if (this.#episode !== null)
+      if (this.#watchedEpisodes !== null)
       {
-        episode = this.#episode;
+        this.#currentEpisode = this.#watchedEpisodes;
 
-        log(`Player: Loaded 'last episode'='${episode}'.`);
+        log(`Player: Loaded 'last watched episode'='${this.#currentEpisode}'.`);
       }
       else log(`Player: Tried to load last episode but it was 'null' (maybe not logged-in?).`);
 
-      episode += 1;
+      this.#currentEpisode += 1;
 
       let player = this.#createPlayer();
-      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${episode}`+
+      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${this.#currentEpisode}`+
                                                     `&only_season=true` +
                                                     `&poster=${CONFIG.posterUrl}`;
 
@@ -133,11 +135,15 @@ class Shikiplayer
         let episodeTime = e.data.value;
 
         if ((this.#episodeDuration - episodeTime) < (this.#episodeDuration / 7.5))
-          if (this.#userId !== null && this.#episode !== null)
+          if (this.#userId !== null && this.#watchedEpisodes !== null)
           {
-            Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, this.#episode);
+            if (this.#watchedEpisodes !== this.#currentEpisode)
+            {
+              this.#watchedEpisodes = this.#currentEpisode;
+              Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, this.#watchedEpisodes);
 
-            log(`Player: Saved 'last episode'='${this.#episode}'.`);
+              log(`Player: Saved 'last episode'='${this.#watchedEpisodes}'.`);
+            }
           }
           else log(`Player: Tried to save last episode but 'user id' or 'episode' was 'null' (maybe not logged-in?).`);
       }
@@ -146,9 +152,9 @@ class Shikiplayer
         /** @type {number} */
         let episode = e.data.value.episode;
 
-        this.#episode = episode;
+        this.#watchedEpisodes = episode;
 
-        log(`Player: Current episode changed, 'current episode'='${this.#episode}'`);
+        log(`Player: Current episode changed, 'current episode'='${this.#watchedEpisodes}'`);
       }
     });
 
