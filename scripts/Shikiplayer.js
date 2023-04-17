@@ -60,10 +60,7 @@ class Shikiplayer
 
       this.#currentEpisode = (this.#watchedEpisodes ?? 0) + 1;
 
-      log(`(View changed)`,
-          `\n|- Anime ID:`, this.#animeId,
-          `\n|- Watched Episodes:`, this.#watchedEpisodes,
-          `\n|- Current Episode:`, this.#currentEpisode);
+      log(`(View changed) Anime ID:`, this.#animeId, `, Watched Episodes:`, this.#watchedEpisodes, `, Current Episode:`, this.#currentEpisode);
 
       this.#player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${this.#currentEpisode}`+
                                                           `&only_season=true` +
@@ -71,7 +68,7 @@ class Shikiplayer
 
       insertAfter(this.#playerBlock, querySelector(`.b-db_entry`));
     }
-    else log(`(View changed) Not an anime page`)
+    else log(`(View changed) Not an anime page`);
   }
 
   static #createHeadline()
