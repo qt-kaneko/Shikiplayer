@@ -34,12 +34,12 @@ class Shikiplayer
   static {this.#init()}
   static async #init()
   {
-    log(`(Starting)`);
+    log(`(Starting) User ID:`, this.#userId);
 
     document.addEventListener(`turbolinks:load`, async () => await this.#onViewChanged());
     await this.#onViewChanged(); // Bugfix too late script load (turbolinks:load fired before script was loaded)
 
-    log(`(Started) User ID:`, this.#userId);
+    log(`(Starting) Done`);
   }
 
   static async #onViewChanged()
@@ -60,7 +60,7 @@ class Shikiplayer
 
       this.#currentEpisode = (this.#watchedEpisodes ?? 0) + 1;
 
-      log(`(View changed) Anime ID:`, this.#animeId, `, Watched Episodes:`, this.#watchedEpisodes, `, Current Episode:`, this.#currentEpisode);
+      log(`(View changed) Anime ID: ${this.#animeId}, Watched Episodes: ${this.#watchedEpisodes}, Current Episode: ${this.#currentEpisode}`);
 
       this.#player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${this.#currentEpisode}`+
                                                           `&only_season=true` +
