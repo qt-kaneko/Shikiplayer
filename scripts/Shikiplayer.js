@@ -34,7 +34,15 @@ class Shikiplayer
   static {this.#init()}
   static async #init()
   {
-    log(`(Starting) User ID:`, this.#userId);
+    // TODO: Move to Boost.js maybe? (at least storage)
+    let version = window.localStorage.getItem(`#${CONFIG.name.toLowerCase()}_version`);
+    if (CONFIG.version !== version)
+    {
+      window.localStorage.setItem(`#${CONFIG.name.toLowerCase()}_version`, CONFIG.version);
+      alert(`Shikiplayer was updated to version: ${CONFIG.version}`);
+    }
+
+    log(`(Starting) Version: ${CONFIG.version}, User ID: ${this.#userId}`);
 
     document.addEventListener(`turbolinks:load`, async () => await this.#onViewChanged());
     await this.#onViewChanged(); // Bugfix too late script load (turbolinks:load fired before script was loaded)
@@ -106,7 +114,7 @@ class Shikiplayer
           if (this.#watchedEpisodes !== this.#currentEpisode) // If not already saved
           {
             this.#watchedEpisodes = this.#currentEpisode;
-            
+
             if (this.#userId !== null)
             {
               Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, this.#watchedEpisodes);
