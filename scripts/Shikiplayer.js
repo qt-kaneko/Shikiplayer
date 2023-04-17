@@ -31,17 +31,14 @@ class Shikiplayer
   /** @type {number} */
   static #episodeDuration;
 
-  /** @type {number | null} */
-  static #userId;
+  static #userId = Shikimori.getUserId();
 
-  static #playerId = `shikiplayer`; // Bugfix too late script load (turbolinks:load fired before script was loaded)
+  static #playerBlock = this.#createBlock(this.#createHeadline(), this.#createPlayer());
 
   static {this.#init()}
   static async #init()
   {
     log(`Starting...`);
-
-    this.#userId = Shikimori.getUserId();
 
     document.addEventListener(`turbolinks:load`, async () => await this.#onViewChanged());
 
@@ -54,8 +51,9 @@ class Shikiplayer
   static async #onViewChanged()
   {
     let info = Shikimori.isAnimePage(window.location);
-    if (info !== null) {
-      if (querySelectorNull(`#${this.#playerId}`) !== null) // Bugfix too late script load (turbolinks:load fired before script was loaded)
+    if (info !== null)
+    {
+      if (document.contains(this.#playerBlock)) // Bugfix too late script load (turbolinks:load fired before script was loaded)
       {
         log(`View changed: Player is already added, skipping.`);
         return;
@@ -77,18 +75,9 @@ class Shikiplayer
 
       this.#currentEpisode += 1;
 
-      let player = this.#createPlayer();
-      player.src = `${Kodik.getPlayer(this.#animeId)}?episode=${this.#currentEpisode}`+
-                                                    `&only_season=true` +
-                                                    `&poster=${CONFIG.posterUrl}`;
-
-      let headline = this.#createHeadline();
-
-      let block = this.#createBlock(headline, player);
-
       let before = querySelector(`.b-db_entry`);
 
-      insertAfter(block, before);
+      insertAfter(this.#playerBlock, before);
     }
     else log(`View changed: Not on anime page.`)
   }
@@ -111,7 +100,6 @@ class Shikiplayer
   static #createPlayer()
   {
     let player = document.createElement(`iframe`);
-    player.id = this.#playerId; // Bugfix too late script load (turbolinks:load fired before script was loaded).
     player.width = `100%`;
     player.allowFullscreen = true;
 
@@ -164,17 +152,17 @@ class Shikiplayer
 
   /**
    * @param {HTMLDivElement} headline
-   * @param {HTMLDivElement} playerContainer
+   * @param {HTMLDivElement} player
    * @returns {HTMLDivElement}
    */
-  static #createBlock(headline, playerContainer)
+  static #createBlock(headline, player)
   {
     let block = document.createElement(`div`);
     block.className = `block`;
 
     block.appendChild(headline);
 
-    block.appendChild(playerContainer);
+    block.appendChild(player);
 
     return block;
   }
