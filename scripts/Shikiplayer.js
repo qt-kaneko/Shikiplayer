@@ -87,8 +87,7 @@ class Shikiplayer
     player.allowFullscreen = true;
 
     new ResizeObserver(() => {
-      // Calculate to fit 16:9
-      player.height = `${(9 * player.clientWidth / 16)}px`;
+      player.height = `${(9 * player.clientWidth / 16)}px`; // Calculate to fit 16:9
     }).observe(player);
 
     window.addEventListener(`message`, (e) => {
