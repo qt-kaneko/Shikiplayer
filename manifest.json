@@ -1,26 +1,34 @@
 {
-
   "manifest_version": 3,
+  
   "name": "Shikiplayer",
-  "version": "3.0.3",
+  "description": "__MSG_extensionDescription__",
+  "default_locale" : "en",
+  "icons": {"128": "./images/icons/icon128.png"},
+  "author": "Kaneko Qt",
+  "homepage_url": "https://github.com/qt-kaneko/Shikiplayer",
+  "version": "4.1.1",
 
-  "description": "Adds Kodik player to shikimori.me website.",
-  "icons": {
-    "128": "./images/icons/icon128.png"
+  "browser_specific_settings": {
+    "gecko": {"id": "{e6624e6b-2351-4a1d-b7b7-c714fffee424}"}
   },
 
   "content_scripts": [
     {
       "matches": ["*://shikimori.me/*"],
       "js": [
-        "./config.js",
+        "./scripts/CONFIG.js",
 
-        "./scripts/helpers/helpers.js",
-        "./scripts/helpers/shikimori.js",
+        "./scripts/Boost.js/debugging.js",
+        "./scripts/Boost.js/typization.js",
+        "./scripts/Boost.js/querySelector.js",
+        "./scripts/Boost.js/insertAfter.js",
 
-        "./scripts/player.js"
-        ],
-      "run_at": "document_start"
+        "./scripts/Kodik.js",
+        "./scripts/Shikimori.js",
+        "./scripts/Shikiplayer.js"
+      ],
+      "run_at": "document_end"
     }
   ]
 }
