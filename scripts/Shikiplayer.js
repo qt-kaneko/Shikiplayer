@@ -104,14 +104,17 @@ class Shikiplayer
 
         if ((this.#episodeDuration - episodeTime) < 3 * 60) // If < 3 minutes left
           if (this.#watchedEpisodes !== this.#currentEpisode) // If not already saved
+          {
+            this.#watchedEpisodes = this.#currentEpisode;
+            
             if (this.#userId !== null)
             {
-              this.#watchedEpisodes = this.#currentEpisode;
               Shikimori.setWatchedEpisodes(this.#animeId, this.#userId, this.#watchedEpisodes);
 
               log(`(Player) Saved Watched Episodes:`, this.#watchedEpisodes);    
             }
             else log(`(Player) Tried to save Watched Episodes but User ID was NULL (maybe not logged-in?)`);
+          }
       }
       else if (e.data.key === `kodik_player_current_episode`)
       {
