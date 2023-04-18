@@ -19,7 +19,7 @@
 
 const CONFIG = Object.freeze({
   name: `Shikiplayer`,
-  version: `4.1.2-dev`,
+  version: `4.1.3-dev`,
   posterUrl: `//raw.github.com/qt-kaneko/Shikiplayer/dev/images/poster.jpg`,
   kodikToken: `447d179e875efe44217f20d1ee2146be`
 });

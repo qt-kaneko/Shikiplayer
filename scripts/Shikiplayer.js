@@ -34,11 +34,11 @@ class Shikiplayer
   static {this.#init()}
   static async #init()
   {
-    // TODO: Move to Boost.js maybe? (at least storage)
-    let version = window.localStorage.getItem(`#${CONFIG.name.toLowerCase()}_version`);
-    if (CONFIG.version !== version)
+    // TODO: Move to Boost.js maybe?
+    let version = storage[`version`];
+    if (version !== CONFIG.version)
     {
-      window.localStorage.setItem(`#${CONFIG.name.toLowerCase()}_version`, CONFIG.version);
+      storage[`version`] = CONFIG.version;
       alert(`Shikiplayer was updated to version: ${CONFIG.version}`);
     }
 

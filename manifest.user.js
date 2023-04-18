@@ -8,7 +8,7 @@
 // @homepageURL     https://github.com/qt-kaneko/Shikiplayer
 // @copyright       2023, Kaneko Qt
 // @license         GPL-3.0-or-later; https://www.gnu.org/licenses/gpl-3.0.txt
-// @version         4.1.2
+// @version         4.1.3
 //
 // @updateURL       https://raw.github.com/qt-kaneko/Shikiplayer/dev/manifest.user.js
 // @downloadURL     https://raw.github.com/qt-kaneko/Shikiplayer/dev/manifest.user.js
@@ -18,6 +18,7 @@
 //
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Boost.js/debugging.js
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Boost.js/typization.js
+// @require         https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Boost.js/storage.js
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Boost.js/querySelector.js
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/dev/scripts/Boost.js/insertAfter.js
 //
