@@ -34,7 +34,7 @@ class Shikiplayer
   static {this.#init()}
   static async #init()
   {
-    // TODO: Move to Boost.js maybe?
+    /** @type {string | undefined} */
     let version = storage[`version`];
     if (version !== CONFIG.version)
     {
