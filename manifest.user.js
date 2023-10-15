@@ -14,6 +14,7 @@
 // @downloadURL     https://raw.github.com/qt-kaneko/Shikiplayer/main/manifest.user.js
 //
 // @match           *://shikimori.me/*
+// @match           *://shikimori.one/*
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/main/scripts/CONFIG.js
 //
 // @require         https://raw.github.com/qt-kaneko/Shikiplayer/main/scripts/Boost.js/debugging.js
