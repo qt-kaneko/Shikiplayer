@@ -15,3 +15,9 @@
 
 ### Useful settings:
 ![image](./assets/screenshots/5.png?raw=true)
+
+## How to build
+- With VSCode: Run 'Build' or 'Build Release' task
+- With Node: Run 'node build.mjs' or 'node build.mjs release'
+
+You need Node, NPM and TSC to be installed in your environment.
