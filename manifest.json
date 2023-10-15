@@ -4,10 +4,10 @@
   "name": "Shikiplayer",
   "description": "__MSG_extensionDescription__",
   "default_locale" : "en",
-  "icons": {"128": "./images/icons/icon128.png"},
+  "icons": {"128": "./assets/icons/icon128.png"},
   "author": "Kaneko Qt",
   "homepage_url": "https://github.com/qt-kaneko/Shikiplayer",
-  "version": "4.1.1",
+  "version": "5.0.0",
 
   "browser_specific_settings": {
     "gecko": {"id": "{e6624e6b-2351-4a1d-b7b7-c714fffee424}"}
@@ -15,19 +15,8 @@
 
   "content_scripts": [
     {
-      "matches": ["*://shikimori.me/*"],
-      "js": [
-        "./scripts/CONFIG.js",
-
-        "./scripts/Boost.js/debugging.js",
-        "./scripts/Boost.js/typization.js",
-        "./scripts/Boost.js/querySelector.js",
-        "./scripts/Boost.js/insertAfter.js",
-
-        "./scripts/Kodik.js",
-        "./scripts/Shikimori.js",
-        "./scripts/Shikiplayer.js"
-      ],
+      "matches": ["*://shikimori.me/*", "*://shikimori.one/*"],
+      "js": ["Shikiplayer.js"],
       "run_at": "document_end"
     }
   ]

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "strict": true,
+
+    "checkJs": true,
+
+    "removeComments": true,
+    "outFile": "dist/Shikiplayer.js",
+    "sourceMap": true,
+
+    "incremental": true
+  },
+  "include": ["src"]
+}

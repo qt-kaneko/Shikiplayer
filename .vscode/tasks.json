@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "process",
+      "command": "node",
+      "args": ["build.mjs"],
+      "group": {"kind": "build", "isDefault": true},
+      "presentation": {"reveal": "silent"},
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Release",
+      "type": "process",
+      "command": "node",
+      "args": ["build.mjs", "release"],
+      "presentation": {"reveal": "silent"},
+      "problemMatcher": []
+    }
+  ]
+}
