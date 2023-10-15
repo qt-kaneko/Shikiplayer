@@ -19,4 +19,4 @@
 // @run-at          document-end
 // ==/UserScript==
 
-alert(`Shikiplayer User Script version is broken for now, sorry 🙏\nCheck for updates on github.com/qt-kaneko/shikiplayer, it will be fixed soon!`);
+alert(`This is wrong Userscript file, check github.com/qt-kaneko/Shikiplayer/releases/latest for latest Userscript version.`);
