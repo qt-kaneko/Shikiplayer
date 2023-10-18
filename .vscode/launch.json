@@ -5,13 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch",
-      "preLaunchTask": "Build",
+      "name": "Launch Extension",
+      "preLaunchTask": "Build Extension",
       "type": "firefox",
       "request": "attach",
       "addonPath": "${workspaceFolder}/dist/",
       "pathMappings": [
-        { "url": "moz-extension://src/", "path": "${workspaceFolder}/src/" }
+        {"url": "moz-extension://src/", "path": "${workspaceFolder}/src/"}
       ],
     }
   ]

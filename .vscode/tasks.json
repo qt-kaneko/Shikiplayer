@@ -2,19 +2,39 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build",
+      "label": "Build Extension",
       "type": "process",
       "command": "node",
-      "args": ["build.mjs"],
-      "group": {"kind": "build", "isDefault": true},
+      "args": ["build.mjs", "extension"],
+      "group": {"kind": "build"},
       "presentation": {"reveal": "silent"},
       "problemMatcher": []
     },
     {
-      "label": "Build Release",
+      "label": "Build Release Extension",
       "type": "process",
       "command": "node",
-      "args": ["build.mjs", "release"],
+      "args": ["build.mjs", "extension", "--release"],
+      "group": {"kind": "build"},
+      "presentation": {"reveal": "silent"},
+      "problemMatcher": []
+    },
+
+    {
+      "label": "Build Userscript",
+      "type": "process",
+      "command": "node",
+      "args": ["build.mjs", "userscript"],
+      "group": {"kind": "build"},
+      "presentation": {"reveal": "silent"},
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Release Userscript",
+      "type": "process",
+      "command": "node",
+      "args": ["build.mjs", "userscript", "--release"],
+      "group": {"kind": "build"},
       "presentation": {"reveal": "silent"},
       "problemMatcher": []
     }
