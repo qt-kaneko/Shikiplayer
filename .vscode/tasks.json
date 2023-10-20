@@ -5,38 +5,50 @@
       "label": "Build Extension",
       "type": "process",
       "command": "node",
-      "args": ["build.mjs", "extension"],
+      "args": ["build.js", "extension"],
       "group": {"kind": "build"},
-      "presentation": {"reveal": "silent"},
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "clear": true
+      }
     },
     {
       "label": "Build Release Extension",
       "type": "process",
       "command": "node",
-      "args": ["build.mjs", "extension", "--release"],
+      "args": ["build.js", "extension", "--release"],
       "group": {"kind": "build"},
-      "presentation": {"reveal": "silent"},
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "clear": true
+      }
     },
 
     {
       "label": "Build Userscript",
       "type": "process",
       "command": "node",
-      "args": ["build.mjs", "userscript"],
+      "args": ["build.js", "userscript"],
       "group": {"kind": "build"},
-      "presentation": {"reveal": "silent"},
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "clear": true
+      }
     },
     {
       "label": "Build Release Userscript",
       "type": "process",
       "command": "node",
-      "args": ["build.mjs", "userscript", "--release"],
+      "args": ["build.js", "userscript", "--release"],
       "group": {"kind": "build"},
-      "presentation": {"reveal": "silent"},
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "clear": true
+      }
     }
   ]
 }

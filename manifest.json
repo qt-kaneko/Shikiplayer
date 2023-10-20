@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
   
-  "name": "Shikiplayer",
+  "name": "$(NAME)",
   "description": "__MSG_extensionDescription__",
   "default_locale" : "en",
   "icons": {"128": "./assets/icons/icon128.png"},
-  "author": "Kaneko Qt",
-  "homepage_url": "https://github.com/qt-kaneko/Shikiplayer",
+  "author": "$(AUTHOR)",
+  "homepage_url": "$(HOMEPAGE_URL)",
   "version": "$(VERSION)",
 
   "browser_specific_settings": {
