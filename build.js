@@ -143,6 +143,7 @@ async function postprocess(config) {
         if (!buffer.isUtf8(content))
             return;
         let contentString = content.toString();
+        let anyReplaced = false;
         for (let replaced = false;; replaced = false) {
             for (let [key, value] of Object.entries(config.resources)) {
                 let target = `$(` + key.toUpperCase() + `)`;
@@ -150,13 +151,14 @@ async function postprocess(config) {
                     ? (await fsp.readFile(value.slice(`file://`.length))).toString()
                     : value;
                 if (!replaced && contentString.includes(target))
-                    replaced = true;
+                    anyReplaced = replaced = true;
                 contentString = contentString.replaceAll(target, replacement);
             }
             if (!replaced)
                 break;
         }
-        await fsp.writeFile(path, contentString);
+        if (anyReplaced)
+            await fsp.writeFile(path, contentString);
     }));
 }
 async function restore(config) {
