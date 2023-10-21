@@ -132,27 +132,31 @@ async function main() {
     console.timeEnd(`Elapsed`);
 }
 main();
+const buffer = require("buffer");
 async function postprocess(config) {
     console.log(`  Post-processing...`);
     await Promise.all(config.buildArtifacts.map(async (path) => {
         let stat = await fsp.stat(path);
         if (!stat.isFile())
             return;
-        let content = (await fsp.readFile(path)).toString();
+        let content = await fsp.readFile(path);
+        if (!buffer.isUtf8(content))
+            return;
+        let contentString = content.toString();
         for (let replaced = false;; replaced = false) {
             for (let [key, value] of Object.entries(config.resources)) {
                 let target = `$(` + key.toUpperCase() + `)`;
                 let replacement = value.startsWith(`file://`)
                     ? (await fsp.readFile(value.slice(`file://`.length))).toString()
                     : value;
-                if (!replaced && content.includes(target))
+                if (!replaced && contentString.includes(target))
                     replaced = true;
-                content = content.replaceAll(target, replacement);
+                contentString = contentString.replaceAll(target, replacement);
             }
             if (!replaced)
                 break;
         }
-        await fsp.writeFile(path, content);
+        await fsp.writeFile(path, contentString);
     }));
 }
 async function restore(config) {
