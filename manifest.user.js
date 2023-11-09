@@ -10,8 +10,8 @@
 // @license         AGPL-3.0-or-later; https://www.gnu.org/licenses/agpl-3.0.txt
 // @version         $(VERSION)
 //
-// @updateURL       https://raw.github.com/qt-kaneko/Shikiplayer/main/manifest.user.js
-// @downloadURL     https://raw.github.com/qt-kaneko/Shikiplayer/main/manifest.user.js
+// @updateURL       https://github.com/qt-kaneko/Shikiplayer/releases/latest/download/manifest.user.js
+// @downloadURL     https://github.com/qt-kaneko/Shikiplayer/releases/latest/download/manifest.user.js
 //
 // @match           *://shikimori.me/*
 // @match           *://shikimori.one/*
