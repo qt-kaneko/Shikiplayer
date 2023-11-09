@@ -71,8 +71,6 @@ var unwrappedWindow: {[k: string]: any, eval?(x: string): void, init?(injectPath
 
       await awaitPort;
 
-      let functions: {[id: string]: Function} = {};
-
       unwrappedWindow = new Proxy({}, {
         get(target, p: string) {
           let propertyPath = p.split(`.`);
