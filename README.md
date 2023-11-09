@@ -18,8 +18,12 @@
 ![image](./assets/screenshots/5.png?raw=true)
 
 ## How to build
-- With VSCode: Run 'Build' or 'Build Release' task
-- With Node: Run 'node build.mjs' or 'node build.mjs release'
+### To build extension:
+- With VSCode: Run 'Build Extension' or 'Build Release Extension' task.
+- With Node: Run 'node build.js extension' or 'node build.js extension --release'.
+### To build userscript:
+- With VSCode: Run 'Build Userscript' or 'Build Release Userscript' task.
+- With Node: Run 'node build.js userscript' or 'node build.js userscript --release'.
 
 You need Node, NPM and TSC to be installed in your environment.
 
