@@ -1,51 +1,79 @@
 abstract class Player
 {
+  abstract get element(): HTMLElement;
+
   get animeId() {return this._animeId}
-  set animeId(value) {
-    if (this._animeId === value) return;
-    this._animeId = value;
-    this.onAnimeIdChanged();
-  }
   protected _animeId = 0;
 
   get episode() {return this._episode}
-  set episode(value) {
-    if (this._episode === value) return;
-    this._episode = value;
-    this.onEpisodeChanged();
-  }
   protected _episode = 0;
 
   get episodeDuration() {return this._episodeDuration}
   protected _episodeDuration = 0;
 
   get episodeTime() {return this._episodeTime}
-  set episodeTime(value) {
-    if (this._episodeTime === value) return;
-    this._episodeTime = value;
-    this.onEpisodeTimeChanged();
-  }
   protected _episodeTime = 0;
 
-  episodeTimeChanged = (() => {});
+  episodeTimeChanged?: () => Promise<void>;
 
   get translation() {return this._translation}
-  set translation(value) {
-    if (this._translation === value) return;
-    this._translation = value;
-    this.onTranslationChanged();
-  }
   protected _translation = 0;
 
-  paused = (() => {});
+  paused?: () => Promise<void>;
 
-  abstract get element(): HTMLElement;
+  get autoSwitchEpisode() {return this._autoSwitchEpisode}
+  protected _autoSwitchEpisode = false;
 
-  protected abstract onAnimeIdChanged(): void;
+  get speed() {return this._speed}
+  protected _speed = 1;
 
-  protected abstract onEpisodeChanged(): void;
+  speedChanged?: () => Promise<void>;
 
-  protected abstract onEpisodeTimeChanged(): void;
+  async setAnimeId(value: number)
+  {
+    if (this._animeId === value) return;
+    this._animeId = value;
+    await this.onAnimeIdChanged();
+  }
+  protected abstract onAnimeIdChanged(): Promise<void>;
 
-  protected abstract onTranslationChanged(): void;
+  async setEpisode(value: number)
+  {
+    if (this._episode === value) return;
+    this._episode = value;
+    await this.onEpisodeChanged();
+  }
+  protected abstract onEpisodeChanged(): Promise<void>;
+
+  async setEpisodeTime(value: number)
+  {
+    if (this._episodeTime === value) return;
+    this._episodeTime = value;
+    await this.onEpisodeTimeChanged();
+  }
+  protected abstract onEpisodeTimeChanged(): Promise<void>;
+
+  async setTranslation(value: number)
+  {
+    if (this._translation === value) return;
+    this._translation = value;
+    await this.onTranslationChanged();
+  }
+  protected abstract onTranslationChanged(): Promise<void>;
+
+  async setAutoSwitchEpisode(value: boolean)
+  {
+    if (this._autoSwitchEpisode === value) return;
+    this._autoSwitchEpisode = value;
+    await this.onAutoSwitchEpisodeChanged();
+  }
+  protected abstract onAutoSwitchEpisodeChanged(): Promise<void>;
+
+  async setSpeed(value: number)
+  {
+    if (this._speed === value) return;
+    this._speed = value;
+    await this.onSpeedChanged();
+  }
+  protected abstract onSpeedChanged(): Promise<void>;
 }

@@ -1,4 +1,7 @@
-class User
+namespace Shikimori
 {
-  id = 0;
+  export interface User
+  {
+    id?: number;
+  }
 }

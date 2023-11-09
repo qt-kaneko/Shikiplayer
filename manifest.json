@@ -13,9 +13,16 @@
     "gecko": {"id": "{e6624e6b-2351-4a1d-b7b7-c714fffee424}"}
   },
 
+  "web_accessible_resources": [
+    {
+      "resources": ["$(UNWRAPPED_WINDOW)"],
+      "matches": ["*://kodik.info/*"]
+    }
+  ],
   "content_scripts": [
     {
-      "matches": ["*://shikimori.me/*", "*://shikimori.one/*"],
+      "matches": ["*://shikimori.me/*", "*://shikimori.one/*", "*://kodik.info/*"],
+      "all_frames": true,
       "js": ["Shikiplayer.js"],
       "run_at": "document_end"
     }

@@ -15,6 +15,7 @@
 //
 // @match           *://shikimori.me/*
 // @match           *://shikimori.one/*
+// @match           *://kodik.info/*
 //
 // @run-at          document-end
 // ==/UserScript==

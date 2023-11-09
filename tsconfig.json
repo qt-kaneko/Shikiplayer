@@ -3,6 +3,7 @@
     "target": "ESNext",
     "strict": true,
 
+    "allowJs": true,
     "checkJs": true,
 
     "removeComments": true,

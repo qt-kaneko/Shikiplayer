@@ -9,10 +9,12 @@
       "preLaunchTask": "Build Extension",
       "type": "firefox",
       "request": "attach",
+      "reloadOnAttach": true,
+      "clearConsoleOnReload": true,
       "addonPath": "${workspaceFolder}/dist/",
       "pathMappings": [
         {"url": "moz-extension://src/", "path": "${workspaceFolder}/src/"}
-      ],
+      ]
     }
   ]
 }

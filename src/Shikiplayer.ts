@@ -1,115 +1,166 @@
-/// <reference path="Shikimori/Shikimori.ts" />
-/// <reference path="Shikimori/UserRate.ts" />
-
-/// <reference path="Players/KodikPlayer.ts" />
-
-/// <reference path="ShikiplayerData.ts" />
-
 class Shikiplayer
 {
-  static #userId = Shikimori.getUserId();
+  private _userId;
+  private _animeId = -1;
 
-  static #player: Player = new KodikPlayer();
-  static #playerBlock = this.#createBlock(
-    this.#createHeadline(),
-    this.#player.element
-  )
+  private _player: Player = new DummyPlayer();
+  private _kodikPlayer = new KodikPlayer();
+  private _anilibriaPlayer = new AnilibriaPlayer();
 
-  static #episodeEnded = false;
+  private _playerBlock = this.createBlock(
+    this.createOptions(),
+    this.createHeadline(),
+    this._player.element
+  );
 
-  static
+  private _episodeEnded = false;
+
+  constructor()
   {
-    console.debug(`[Shikiplayer] (Starting) User ID:`, this.#userId);
+    if (!CONFIG.shikimoriUrl.test(location.hostname)) return;
+
+    this._userId = Shikimori.getUserId();
+    console.debug(`[Shikiplayer] (Starting) User ID:`, this._userId);
 
     // TODO: Alert if user not logged in
 
-    document.addEventListener(`turbolinks:load`, () => this.#onViewChanged());
-    this.#onViewChanged(); // Bugfix too late script load (turbolinks:load fired before script was loaded)
+    document.addEventListener(`turbolinks:load`, () => this.onViewChanged());
+    this.onViewChanged(); // Bugfix too late script load (turbolinks:load fired before script was loaded)
 
     console.debug(`[Shikiplayer] (Starting) Done`);
   }
 
-  static #onViewChanged()
+  private async onViewChanged()
   {
-    let animePage = Shikimori.isAnimePage(window.location);
+    let animePage = Shikimori.isAnimeView(window.location);
 
-    if (animePage != null) this.#onAnimePageChanged(animePage);
+    if (animePage != null) await this.onAnimeViewChanged(animePage);
     else console.debug(`[Shikiplayer] (View changed) Not an anime page`);
   }
-  static #onAnimePageChanged(animePage: AnimePage)
+  private async onAnimeViewChanged(animePage: Shikimori.AnimeView)
   {
     // Bugfix too late script load (turbolinks:load fired before script was loaded)
-    if (document.contains(this.#playerBlock)) return;
+    if (document.contains(this._playerBlock)) return;
 
-    let animeId = animePage.animeId;
+    let elementBefore = document.querySelector(`.b-db_entry`)!;
+    elementBefore.parentNode!.insertBefore(this._playerBlock, elementBefore.nextSibling!);
 
-    let userRate = Shikimori.getUserRate(animeId);
+    this._animeId = animePage.animeId;
+
+    let userRate = await ShikimoriApi.getUserRate(this._animeId);
     let data = ShikiplayerData.load(userRate?.text ?? ``) ?? new ShikiplayerData();
 
     let currentEpisode = (userRate?.episodes ?? 0) + 1;
-    let episodeTime = data.episodeTime;
     let translation = data.translation;
+    let episodeTime = data.episodeTime;
 
-    this.#player.animeId = animeId;
-    this.#player.translation = translation;
-    this.#player.episode = currentEpisode;
-    this.#player.episodeTime = episodeTime;
-    this.#player.paused = () => {
-      if (this.#userId == null) return;
+    await this._player.setAnimeId(this._animeId);
+    await this._player.setTranslation(translation);
+    await this._player.setEpisode(currentEpisode);
+    await this._player.setEpisodeTime(episodeTime);
+    await this._player.setAutoSwitchEpisode(true);
+    await this._player.setSpeed(localStorage[`speed`] ?? 1);
 
-      if (this.#episodeEnded) return;
+    this._player.paused = () => this.paused();
+    this._player.episodeTimeChanged = () => this.episodeTimeChanged();
+    this._player.speedChanged = () => this.speedChanged();
 
-      let data = new ShikiplayerData();
-      data.episodeTime = this.#player.episodeTime;
-      data.translation = this.#player.translation;
+    await this.changePlayer(this._kodikPlayer);
 
-      let userRate = Shikimori.getUserRate(animeId) ?? new UserRate();
-      userRate.status = (userRate.status === `rewatching`) ? `rewatching` : `watching`;
-      userRate.episodes = this.#player.episode - 1;
-      userRate.text = data.save(userRate.text ?? ``);
-
-      Shikimori.setUserRate(animeId, this.#userId, userRate);
-
-      console.debug(`[Shikiplayer] (Paused) Saved time: ${this.#player.episodeTime}s`);
-    };
-    this.#player.episodeTimeChanged = () => {
-      if ((this.#player.episodeDuration - this.#player.episodeTime) < (3 * 60))
-      {
-        if (this.#userId == null) return;
-
-        if (this.#episodeEnded) return;
-        this.#episodeEnded = true;
-
-        let data = new ShikiplayerData();
-        data.episodeTime = 0;
-        data.translation = this.#player.translation;
-
-        let userRate = Shikimori.getUserRate(animeId) ?? new UserRate();
-        userRate.status = (userRate.status === `rewatching`) ? `rewatching` : `watching`;
-        userRate.episodes = this.#player.episode;
-        userRate.text = data.save(userRate.text ?? ``);
-
-        Shikimori.setUserRate(animeId, this.#userId, userRate);
-
-        console.debug(`[Shikiplayer] (Episode Time Changed) Marked as watched`);
-      }
-      else this.#episodeEnded = false;
-    };
-
-    let elementBefore = document.querySelector(`.b-db_entry`)!;
-    elementBefore.parentNode!.insertBefore(this.#playerBlock, elementBefore.nextSibling!);
-
-    console.debug(`[Shikiplayer] (View changed) Anime ID: ${animeId}` +
+    console.debug(`[Shikiplayer] (View changed) Anime ID: ${this._animeId}` +
                                              `, Current Episode: ${currentEpisode}` +
                                              `, User Rate:`, userRate);
   }
 
-  static #createHeadline()
+  private async paused()
+  {
+    if (this._userId == null) return;
+
+    if (this._episodeEnded) return;
+
+    let data = new ShikiplayerData();
+    data.episodeTime = this._player.episodeTime;
+    data.translation = this._player.translation;
+
+    let userRate = await ShikimoriApi.getUserRate(this._animeId) ?? {episodes: 0, status: ``};
+    userRate.status = (userRate.status === `rewatching`) ? `rewatching` : `watching`;
+    userRate.episodes = this._player.episode - 1;
+    userRate.text = data.save(userRate.text ?? ``);
+
+    ShikimoriApi.setUserRate(this._animeId, this._userId, userRate);
+
+    console.debug(`[Shikiplayer] (Paused) Saved time: ${this._player.episodeTime}s`);
+  }
+  private async episodeTimeChanged()
+  {
+    if ((this._player.episodeDuration - this._player.episodeTime) < (3 * 60))
+    {
+      if (this._userId == null) return;
+
+      if (this._episodeEnded) return;
+      this._episodeEnded = true;
+
+      let data = new ShikiplayerData();
+      data.episodeTime = 0;
+      data.translation = this._player.translation;
+
+      let userRate = await ShikimoriApi.getUserRate(this._animeId) ?? {episodes: 0, status: ``};
+      userRate.status = (userRate.status === `rewatching`) ? `rewatching` : `watching`;
+      userRate.episodes = this._player.episode;
+      userRate.text = data.save(userRate.text ?? ``);
+
+      ShikimoriApi.setUserRate(this._animeId, this._userId, userRate);
+
+      console.debug(`[Shikiplayer] (Episode Time Changed) Marked as watched`);
+    }
+    else this._episodeEnded = false;
+  }
+  private async speedChanged()
+  {
+    localStorage[`speed`] = this._player.speed;
+  }
+
+  private async changePlayer(player: Player)
+  {
+    this._player.element.replaceWith(player.element);
+
+    await player.setAnimeId(this._player.animeId);
+    await player.setTranslation(this._player.translation);
+    await player.setEpisode(this._player.episode);
+    await player.setEpisodeTime(this._player.episodeTime);
+    await player.setAutoSwitchEpisode(this._player.autoSwitchEpisode);
+    await player.setSpeed(this._player.speed);
+
+    player.paused = this._player.paused;
+    player.episodeTimeChanged = this._player.episodeTimeChanged;
+    player.speedChanged = this._player.speedChanged;
+
+    this._player = player;
+  }
+
+  private createOptions()
+  {
+    let options = document.createElement(`div`);
+    options.className = `b-options-floated mobile-phone`;
+
+    let kodik = document.createElement(`a`);
+    kodik.text = `Kodik`;
+    kodik.onclick = (ev) => this.changePlayer(this._kodikPlayer);
+    options.appendChild(kodik);
+
+    // let anilibria = document.createElement(`a`);
+    // anilibria.text = `Anilibria`;
+    // anilibria.onclick = (ev) => this.changePlayer(this._anilibriaPlayer);
+    // options.appendChild(anilibria);
+
+    return options;
+  }
+  private createHeadline()
   {
     let headline = document.createElement(`div`);
     headline.className = `subheadline`;
     headline.appendChild(document.createTextNode(`смотреть`));
-    headline.onclick = () => {
+    headline.onclick = (ev) => {
       let clicks = Number(headline.dataset[`clicks`] ?? `0`)
 
       clicks += 1;
@@ -119,16 +170,16 @@ class Shikiplayer
         alert(`Shikiplayer version is ${CONFIG.version}`);
       }
 
-      headline.dataset[`clicks`] = String(clicks);
+      headline.dataset[`clicks`] = clicks.toString();
     };
 
     return headline;
   }
-
-  static #createBlock(headline: HTMLElement, player: HTMLElement)
+  private createBlock(options: HTMLElement, headline: HTMLElement, player: HTMLElement)
   {
     let block = document.createElement(`div`);
     block.className = `block`;
+    block.appendChild(options);
     block.appendChild(headline);
     block.appendChild(player);
 
