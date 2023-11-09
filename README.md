@@ -22,3 +22,5 @@
 - With Node: Run 'node build.mjs' or 'node build.mjs release'
 
 You need Node, NPM and TSC to be installed in your environment.
+
+> This repo is using [Build.js](https://github.com/qt-kaneko/Build.js), a smol build system.
