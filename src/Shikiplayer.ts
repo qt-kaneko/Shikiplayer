@@ -6,6 +6,7 @@ class Shikiplayer
   private _player: Player = new DummyPlayer();
   private _kodikPlayer = new KodikPlayer();
   private _anilibriaPlayer = new AnilibriaPlayer();
+  private _players: Player[] = [this._kodikPlayer, this._anilibriaPlayer];
 
   private _playerBlock = this.createBlock(
     this.createOptions(),
@@ -54,16 +55,18 @@ class Shikiplayer
     let translation = data.translation;
     let episodeTime = data.episodeTime;
 
-    await this._player.setAnimeId(this._animeId);
-    await this._player.setTranslation(translation);
-    await this._player.setEpisode(currentEpisode);
-    await this._player.setEpisodeTime(episodeTime);
-    await this._player.setAutoSwitchEpisode(true);
-    await this._player.setSpeed(localStorage[`speed`] ?? 1);
+    for (let player of this._players)
+    {
+      await player.setAnimeId(this._animeId);
+      await player.setTranslation(translation);
+      await player.setEpisode(currentEpisode);
+      await player.setEpisodeTime(episodeTime);
+      await player.setAutoSwitchEpisode(true);
 
-    this._player.paused = () => this.paused();
-    this._player.episodeTimeChanged = () => this.episodeTimeChanged();
-    this._player.speedChanged = () => this.speedChanged();
+      player.paused = () => this.paused();
+      player.episodeTimeChanged = () => this.episodeTimeChanged();
+      player.speedChanged = () => this.speedChanged();
+    }
 
     await this.changePlayer(this._kodikPlayer);
 
@@ -123,18 +126,6 @@ class Shikiplayer
   private async changePlayer(player: Player)
   {
     this._player.element.replaceWith(player.element);
-
-    await player.setAnimeId(this._player.animeId);
-    await player.setTranslation(this._player.translation);
-    await player.setEpisode(this._player.episode);
-    await player.setEpisodeTime(this._player.episodeTime);
-    await player.setAutoSwitchEpisode(this._player.autoSwitchEpisode);
-    await player.setSpeed(this._player.speed);
-
-    player.paused = this._player.paused;
-    player.episodeTimeChanged = this._player.episodeTimeChanged;
-    player.speedChanged = this._player.speedChanged;
-
     this._player = player;
   }
 
@@ -148,10 +139,14 @@ class Shikiplayer
     kodik.onclick = (ev) => this.changePlayer(this._kodikPlayer);
     options.appendChild(kodik);
 
-    // let anilibria = document.createElement(`a`);
-    // anilibria.text = `Anilibria`;
-    // anilibria.onclick = (ev) => this.changePlayer(this._anilibriaPlayer);
-    // options.appendChild(anilibria);
+    let anilibria = document.createElement(`a`);
+    anilibria.text = `Anilibria`;
+    anilibria.onclick = (ev) => this.changePlayer(this._anilibriaPlayer);
+
+    this._anilibriaPlayer.existsChanged = async () => {
+      if (this._anilibriaPlayer.exists) options.appendChild(anilibria);
+      else anilibria.remove();
+    }
 
     return options;
   }

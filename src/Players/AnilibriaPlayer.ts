@@ -29,26 +29,12 @@ class AnilibriaPlayer extends Player
 
   protected async onAnimeIdChanged()
   {
-    this._url = `//www.anilibria.tv/public/iframe.php`;
+    let id = await MALibriaApi.mal2anilibria(this._animeId);
 
-    let kodikAnilibriaInfo = (await KodikApi.search(this._animeId)).find(r => r.translation.id === 610);
-    if (kodikAnilibriaInfo == null)
-    {
-      this.rebuildIframeSrc();
-      return;
-    }
+    this._exists = (id != null);
+    await this.existsChanged?.();
 
-    let alternativePlayer = kodikAnilibriaInfo.link.replace(`//kodik.info/`, ``);
-    let title = await AnilibriaApi.search(`//aniqit.com/${alternativePlayer}?translations=false`);
-
-    if (title == null)
-    {
-      this.rebuildIframeSrc();
-      return;
-    }
-
-    this._url = `//www.anilibria.tv/public/iframe.php`
-              + `?id=${title.id}`;
+    if (id != null) this._url = `//www.anilibria.tv/public/iframe.php?id=${id}`;
 
     this.rebuildIframeSrc();
   }

@@ -21,7 +21,7 @@ class KodikPlayer extends Player
   };
   private __port?: MessagePort;
 
-  private _awaitPort?: Promise<void>;
+  private _awaitPort: Promise<void>;
 
   constructor()
   {
@@ -124,14 +124,17 @@ class KodikPlayer extends Player
   }
   protected async onAutoSwitchEpisodeChanged()
   {
-    if (this._port == null) await this._awaitPort;
-
-    let message: Message = {
-      action: `setAutoSwitchEpisode`,
-      data: this._autoSwitchEpisode
+    let send = () => {
+      let message: Message = {
+        action: `setAutoSwitchEpisode`,
+        data: this._autoSwitchEpisode
+      };
+  
+      this._port!.postMessage(message);
     };
 
-    this._port!.postMessage(message);
+    if (this._port != null) send();
+    else this._awaitPort.then(() => send());
   }
   protected async onSpeedChanged() {}
 }

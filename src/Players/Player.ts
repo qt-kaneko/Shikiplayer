@@ -29,6 +29,11 @@ abstract class Player
 
   speedChanged?: () => Promise<void>;
 
+  get exists() {return this._exists}
+  protected _exists = false;
+
+  existsChanged?: () => Promise<void>;
+
   async setAnimeId(value: number)
   {
     if (this._animeId === value) return;
