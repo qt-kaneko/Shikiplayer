@@ -13,7 +13,7 @@ const CONFIG = {
     kodik_token: "447d179e875efe44217f20d1ee2146be",
     poster: "//raw.github.com/qt-kaneko/Shikiplayer/main/assets/poster.jpg",
 
-    // userscript: "file://dist/Shikiplayer.js"
+    userscript: "file://dist/Shikiplayer.js"
   },
 
   esbuild: {
