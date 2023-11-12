@@ -4,12 +4,10 @@ const CONFIG = {
     version: "5.3.0",
     author: "Kaneko Qt",
     homepage_url: "https://github.com/qt-kaneko/Shikiplayer",
-    icon: "file://assets/icons/icon128-light.png",
-    unwrapped_window: "lib/UnwrappedWindow/inject.js",
-
     description: "Adds Kodik player to Shikimori website",
     description_ru: "Добавляет плеер Kodik на сайт Shikimori",
 
+    unwrapped_window: "lib/UnwrappedWindow/inject.js",
     kodik_token: "447d179e875efe44217f20d1ee2146be",
     poster: "//raw.github.com/qt-kaneko/Shikiplayer/main/assets/poster.jpg",
 
