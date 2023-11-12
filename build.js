@@ -13,12 +13,12 @@ const CONFIG = {
     kodik_token: "447d179e875efe44217f20d1ee2146be",
     poster: "//raw.github.com/qt-kaneko/Shikiplayer/main/assets/poster.jpg",
 
-    userscript: "file://dist/Shikiplayer.js"
+    // userscript: "file://dist/Shikiplayer.js"
   },
 
   esbuild: {
-    outfile: "Shikiplayer.js",
     entry: "src/index.ts",
+    outFile: "Shikiplayer.js"
   },
 
   destination: "dist",
@@ -47,7 +47,7 @@ async function build(config) {
     if (includes.length === 0)
         console.log(`  Nothing to include ¯\\_(ツ)_/¯`);
     else {
-        console.log(`  Copying includes -> ${config.destination}`);
+        tasks.push((async () => console.log(`  Copying includes -> ${config.destination}`))());
         tasks.push(...includes.map(include => {
             let source;
             let destination;
@@ -58,47 +58,37 @@ async function build(config) {
             return fsp.cp(source, config.destination + `/` + destination, { recursive: true });
         }));
     }
-    let releaseTsConfigExists = fs.existsSync(`tsconfig.release.json`);
-    if (config.typescript && config.esbuild == null) {
-        console.log(`  Compiling...`);
-        tasks.push(spawnAsync(`tsc`, [`--build`, (config.release && releaseTsConfigExists ? `tsconfig.release.json` : `tsconfig.json`)], { stdio: `inherit` })
-            .then(exitCode => exitCode !== 0 ? Promise.reject() : Promise.resolve()));
+    if (config.typescript && !config.esbuild) {
+        tasks.push((async () => {
+            console.log(`  Compiling...`);
+            let command = `tsc`;
+            let options = [
+                `--project`, (config.release && config.tsconfigRelease) ? `tsconfig.release.json` : `tsconfig.json`,
+                `--outDir`, config.destination
+            ];
+            await spawnAsync(command, options, { stdio: `inherit` }).then(exitCode => exitCode !== 0 ? Promise.reject() : Promise.resolve());
+        })());
     }
-    if (config.esbuild != null) {
-        let options = [
-            config.esbuild.entry,
-            `--bundle`,
-            `--outfile=${config.destination}/${config.esbuild.outfile}`,
-            `--log-level=warning`
-        ];
-        if (config.typescript)
-            options.push(config.release && releaseTsConfigExists ? `--tsconfig=tsconfig.release.json` : `--tsconfig=tsconfig.json`);
-        if (!config.release)
-            options.push(`--sourcemap`);
-        console.log(`  Bundling...`);
-        tasks.push(spawnAsync(`esbuild`, options, { stdio: `inherit` })
-            .then(exitCode => exitCode !== 0 ? Promise.reject() : Promise.resolve()));
+    if (config.esbuild) {
+        tasks.push((async () => {
+            console.log(`  Bundling...`);
+            let command = `esbuild`;
+            let options = [
+                config.esbuild.entry,
+                `--bundle`,
+                `--outfile=${config.destination}/${config.esbuild.outFile}`,
+                `--log-level=warning`
+            ];
+            if (config.release && config.tsconfigRelease)
+                options.push(`--tsconfig=tsconfig.release.json`);
+            if (!config.release && config.tsconfig)
+                options.push(`--tsconfig=tsconfig.json`);
+            if (!config.release)
+                options.push(`--sourcemap`);
+            await spawnAsync(command, options, { stdio: `inherit` }).then(exitCode => exitCode !== 0 ? Promise.reject() : Promise.resolve());
+        })());
     }
-    try {
-        await Promise.all(tasks);
-    }
-    catch (e) {
-        if (e instanceof Error) {
-            throw new BuildError(e.message);
-        }
-        else
-            throw e;
-    }
-    let outFile = config.tsconfig?.[`compilerOptions`]?.[`outFile`];
-    if (config.main && config.typescript && outFile != null) {
-        const mainInvoke = `\nif (typeof main === "function") main(); // Build.js auto-generated`;
-        let content = await fsp.readFile(outFile);
-        let contentString = content.toString();
-        if (!contentString.includes(mainInvoke)) {
-            contentString += mainInvoke;
-            await fsp.writeFile(outFile, contentString);
-        }
-    }
+    await Promise.all(tasks);
     if (tasks.length > 0) {
         config.buildArtifacts = fs.readdirSync(config.destination, { recursive: true })
             .map(name => config.destination + `/` + name);
@@ -109,20 +99,14 @@ async function clean(config) {
     if (!config.release)
         return;
     if (config.typescript && !config.esbuild) {
-        tasks.push(spawnAsync(`tsc`, [`--build`, `--clean`, `tsconfig.json`], { stdio: `inherit` }), spawnAsync(`tsc`, [`--build`, `--clean`, `tsconfig.release.json`], { stdio: `inherit` }));
+        if (config.tsconfig)
+            tasks.push(spawnAsync(`tsc`, [`--build`, `--clean`, `tsconfig.json`], { stdio: `inherit` }));
+        if (config.tsconfigRelease)
+            tasks.push(spawnAsync(`tsc`, [`--build`, `--clean`, `tsconfig.release.json`], { stdio: `inherit` }));
     }
     tasks.push(fsp.rm(config.destination, { recursive: true, force: true }));
     console.log(`  Cleaning...`);
-    try {
-        await Promise.all(tasks);
-    }
-    catch (e) {
-        if (e instanceof Error) {
-            throw new BuildError(e.message);
-        }
-        else
-            throw e;
-    }
+    await Promise.all(tasks);
 }
 async function main() {
     console.time(`Elapsed`);
@@ -136,24 +120,26 @@ async function main() {
         if (!fs.existsSync(`build.js`)) {
             throw new BuildError(`'build.js' was not found in working directory, are you running in correct folder?`);
         }
+        let args = process.argv.slice(2);
+        CONFIG.options = args.filter(arg => !arg.startsWith(`-`));
+        CONFIG.parameters = args.filter(arg => arg.startsWith(`-`));
+        CONFIG.configuration ??= CONFIG.options.at(0);
+        CONFIG.release ??= CONFIG.parameters.includes(`--release`);
         if (fs.existsSync(`package.json`)) {
             CONFIG.npm ??= true;
             CONFIG.package = JSON.parse(fs.readFileSync(`package.json`).toString());
         }
         else
             CONFIG.npm ??= false;
-        let args = process.argv.slice(2);
-        CONFIG.options = args.filter(arg => !arg.startsWith(`-`));
-        CONFIG.parameters = args.filter(arg => arg.startsWith(`-`));
-        CONFIG.configuration = CONFIG.options.at(0);
-        CONFIG.release = CONFIG.parameters.includes(`--release`);
         if (fs.existsSync(`tsconfig.json`)) {
             CONFIG.typescript ??= true;
             CONFIG.tsconfig = JSON.parse(fs.readFileSync(`tsconfig.json`).toString());
+            if (fs.existsSync(`tsconfig.release.json`)) {
+                CONFIG.tsconfigRelease = JSON.parse(fs.readFileSync(`tsconfig.release.json`).toString());
+            }
         }
         else
             CONFIG.typescript ??= false;
-        CONFIG.main ??= (!CONFIG.esbuild ? true : false);
         console.log(`Building`
             + (CONFIG.configuration != null ? ` configuration '${CONFIG.configuration}'`
                 : ` without configuration`)
@@ -167,22 +153,18 @@ async function main() {
         console.log(`\x1B[32mBuild succeeded.\x1B[0m`);
     }
     catch (e) {
-        if (e instanceof BuildError) {
-            if (e.message !== ``) {
-                console.log();
-                console.log(`\x1B[91mError: ${e.message}\x1B[0m`);
-            }
+        if (`message` in e) {
             console.log();
-            console.log(`\x1B[91mBuild FAILED.\x1B[0m`);
-            process.exitCode = -1;
+            console.log(`\x1B[91mError: ${e.message}\x1B[0m`);
         }
-        else
-            throw e;
+        console.log();
+        console.log(`\x1B[91mBuild FAILED.\x1B[0m`);
+        process.exitCode = -1;
     }
     console.log();
     console.timeEnd(`Elapsed`);
 }
-main();
+main().catch(reason => { throw reason; });
 const buffer = require("buffer");
 async function postprocess(config) {
     console.log(`  Post-processing...`);
@@ -244,6 +226,14 @@ async function validate(config) {
     if (fs.existsSync(config.destination) && !fs.readdirSync(config.destination).some(name => name.endsWith(`.js`))) {
         throw new BuildError(`No .js files found in '${config.destination}', is destination specified correctly?\n` +
             `Remove '${config.destination}' manually if you are sure that this is correct behaviour.`);
+    }
+    if (config.esbuild) {
+        if (config.esbuild.entry == null) {
+            throw new BuildError(`Entry point was not provided for ESBuild.`);
+        }
+        if (config.esbuild.outFile == null) {
+            throw new BuildError(`Out file path was not provided for ESBuild.`);
+        }
     }
     if (!(config.includes instanceof Array)) {
         let configurations = Object.keys(config.includes);
