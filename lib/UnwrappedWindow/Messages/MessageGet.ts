@@ -1,4 +1,5 @@
-type MessageGet = {
+export type MessageGet =
+{
   action: `get`;
   propertyPath: string[];
 };

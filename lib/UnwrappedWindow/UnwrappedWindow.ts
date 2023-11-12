@@ -1,11 +1,11 @@
-/// <reference path="Messages/MessageGet.ts" />
-/// <reference path="Messages/MessageSet.ts" />
+import { MessageGet } from "./Messages/MessageGet";
+import { MessageSet } from "./Messages/MessageSet";
 
 declare const wrappedJSObject: (typeof window) | undefined;
 declare const unsafeWindow: (typeof window) | undefined;
 declare const chrome: any | undefined;
 
-var unwrappedWindow: {[k: string]: any, eval?(x: string): void, init?(injectPath: string): Promise<void>} = {
+export var unwrappedWindow: {[k: string]: any, eval?(x: string): void, init?(injectPath: string): Promise<void>} = {
   async init(injectPath: string) {
     if (typeof wrappedJSObject !== `undefined`) // Firefox
     {
@@ -88,7 +88,7 @@ var unwrappedWindow: {[k: string]: any, eval?(x: string): void, init?(injectPath
           let propertyPath = p.split(`.`);
           let property = propertyPath.pop()!;
 
-          let message = {
+          let message: MessageSet = {
             action: `set`,
             propertyPath: propertyPath,
             property: property,

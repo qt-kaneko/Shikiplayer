@@ -1,12 +1,4 @@
-namespace Shikimori
+export type AnimeView =
 {
-  export class AnimeView
-  {
-    animeId = 0;
-
-    constructor(animeId: number)
-    {
-      this.animeId = animeId;
-    }
-  }
-}
+  animeId: number;
+};

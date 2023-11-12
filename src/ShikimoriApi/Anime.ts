@@ -1,7 +1,6 @@
-namespace ShikimoriApi
+import {UserRate} from "./UserRate";
+
+export type Anime =
 {
-  export type Anime =
-  {
-    user_rate?: UserRate;
-  }
+  user_rate?: UserRate;
 }

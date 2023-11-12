@@ -1,6 +1,6 @@
-/// <reference path="Player.ts" />
+import {PlayerBase} from "./PlayerBase";
 
-class DummyPlayer extends PlayerBase
+export class DummyPlayer extends PlayerBase
 {
   get element() {return this._element};
   private _element = document.createElement(`div`);

@@ -1,12 +1,17 @@
-class Shikiplayer
+import * as Players from "./Players";
+import * as Shikimori from "./Shikimori";
+import * as ShikimoriApi from "./ShikimoriApi";
+import {ShikiplayerData} from "./ShikiplayerData";
+
+export class Shikiplayer
 {
   private _userId;
   private _animeId = -1;
 
-  private _player: PlayerBase = new DummyPlayer();
-  private _kodikPlayer = new KodikPlayer();
-  private _anilibriaPlayer = new AnilibriaPlayer();
-  private _players: PlayerBase[] = [this._kodikPlayer, this._anilibriaPlayer];
+  private _player: Players.PlayerBase = new Players.DummyPlayer();
+  private _kodikPlayer = new Players.KodikPlayer();
+  private _anilibriaPlayer = new Players.AnilibriaPlayer();
+  private _players: Players.PlayerBase[] = [this._kodikPlayer, this._anilibriaPlayer];
 
   private _playerBlock = this.createBlock(
     this.createOptions(),
@@ -18,7 +23,7 @@ class Shikiplayer
 
   constructor()
   {
-    if (!CONFIG.shikimoriUrl.test(location.hostname)) return;
+    if (!/shikimori/.test(location.hostname)) return;
 
     this._userId = Shikimori.getUserId();
     console.debug(`[Shikiplayer] (Starting) User ID:`, this._userId);
@@ -123,7 +128,7 @@ class Shikiplayer
     localStorage[`speed`] = this._player.speed;
   }
 
-  private async changePlayer(player: PlayerBase)
+  private async changePlayer(player: Players.PlayerBase)
   {
     this._player.element.replaceWith(player.element);
     this._player = player;
@@ -162,7 +167,7 @@ class Shikiplayer
       if (clicks >= 5)
       {
         clicks = 0;
-        alert(`Shikiplayer version is ${CONFIG.version}`);
+        alert(`Shikiplayer version is $(VERSION)`);
       }
 
       headline.dataset[`clicks`] = clicks.toString();

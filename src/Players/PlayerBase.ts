@@ -1,4 +1,4 @@
-abstract class PlayerBase
+export abstract class PlayerBase
 {
   abstract get element(): HTMLElement;
 

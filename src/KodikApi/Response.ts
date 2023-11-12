@@ -1,7 +1,6 @@
-namespace KodikApi
+import {Result} from "./Result";
+
+export type Response =
 {
-  export interface Response
-  {
-    results: Result[];
-  }
-}
+  results: Result[];
+};

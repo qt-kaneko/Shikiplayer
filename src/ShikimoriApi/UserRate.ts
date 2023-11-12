@@ -1,9 +1,6 @@
-namespace ShikimoriApi
+export type UserRate =
 {
-  export type UserRate =
-  {
-    status: string;
-    text?: string;
-    episodes: number;
-  }
-}
+  status: string;
+  text?: string;
+  episodes: number;
+};

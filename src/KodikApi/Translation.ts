@@ -1,7 +1,4 @@
-namespace KodikApi
+export type Translation =
 {
-  export interface Translation
-  {
-    id: number;
-  }
-}
+  id: number;
+};

@@ -1,12 +1,14 @@
-namespace Shikimori
+import {AnimeView} from "./AnimeView";
+
+export function isAnimeView(location: Location)
 {
-  export function isAnimeView(location: Location)
-  {
-    let match = /\/animes\/[a-z]?(?<animeId>[0-9]+)/.exec(location.pathname);
-    if (match == null) return null;
+  let match = /\/animes\/[a-z]?(?<animeId>[0-9]+)/.exec(location.pathname);
+  if (match == null) return null;
 
-    let { animeId } = match.groups!;
+  let { animeId } = match.groups!;
 
-    return new AnimeView(Number(animeId));
-  }
+  let animeView: AnimeView = {
+    animeId: Number(animeId)
+  };
+  return animeView;
 }

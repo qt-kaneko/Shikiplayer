@@ -1,8 +1,5 @@
-namespace MALibriaApi
+export type Title =
 {
-  export type Title =
-  {
-    myanimelist_id: number,
-    anilibria_id: number;
-  };
-}
+  myanimelist_id: number;
+  anilibria_id: number;
+};

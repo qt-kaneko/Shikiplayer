@@ -1,4 +1,4 @@
-class ShikiplayerData
+export class ShikiplayerData
 {
   private static readonly _dataPrefix = `Shikiplayer Data: `;
 

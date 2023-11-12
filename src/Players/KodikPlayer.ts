@@ -1,4 +1,6 @@
-/// <reference path="Player.ts" />
+import * as KodikApi from "../KodikApi";
+
+import {PlayerBase} from "./PlayerBase";
 
 interface Message
 {
@@ -6,7 +8,7 @@ interface Message
   data: any;
 }
 
-class KodikPlayer extends PlayerBase
+export class KodikPlayer extends PlayerBase
 {
   private _url = ``;
 
@@ -22,6 +24,48 @@ class KodikPlayer extends PlayerBase
   private __port?: MessagePort;
 
   private _awaitPort: Promise<void>;
+
+  public static async inject()
+  {
+    // If script is loaded inside Kodiks iframe
+    if (!/kodik/.test(location.hostname)) return;
+
+    await unwrappedWindow.init!(`$(UNWRAPPED_WINDOW)`);
+
+    let channel = new MessageChannel();
+    let port = channel.port1;
+
+    port.onmessage = (ev) => onMessage(ev.data);
+    window.parent.postMessage(`shikiplayer`, `*`, [channel.port2]);
+
+    let awaitPlayer: Promise<void> | undefined;
+
+    let player = document.querySelector<HTMLVideoElement>(`video`) ?? undefined;
+    if (player == null)
+    {
+      awaitPlayer = new Promise(r =>
+        new MutationObserver((mutations, observer) => {
+          if (mutations.flatMap(mutation => mutation.addedNodes).length === 0) return;
+
+          player = document.querySelector(`video`) ?? undefined;
+          if (player == null) return;
+
+          observer.disconnect();
+          r();
+        }).observe(document.documentElement, {childList: true, subtree: true})
+      );
+    }
+
+    await awaitPlayer;
+
+    function onMessage(message: Message)
+    {
+      if (message.action === `setAutoSwitchEpisode`)
+      {
+        unwrappedWindow[`auto_switch_episode`] = message.data;
+      }
+    }
+  }
 
   constructor()
   {
@@ -97,7 +141,7 @@ class KodikPlayer extends PlayerBase
     this._iframe.src = `https:${this._url}`
                      + `?episode=${this._episode}`
                      + `&start_from=${this._episodeTime}`
-                     + `&poster=${CONFIG.posterUrl}`;
+                     + `&poster=$(POSTER)`;
   }
 
   protected async onAnimeIdChanged()
@@ -138,3 +182,5 @@ class KodikPlayer extends PlayerBase
   }
   protected async onSpeedChanged() {}
 }
+
+import { unwrappedWindow } from "../../lib/UnwrappedWindow/UnwrappedWindow";

@@ -10,7 +10,15 @@ const CONFIG = {
     description: "Adds Kodik player to Shikimori website",
     description_ru: "Добавляет плеер Kodik на сайт Shikimori",
 
+    kodik_token: "447d179e875efe44217f20d1ee2146be",
+    poster: "//raw.github.com/qt-kaneko/Shikiplayer/main/assets/poster.jpg",
+
     userscript: "file://dist/Shikiplayer.js"
+  },
+
+  esbuild: {
+    outfile: "Shikiplayer.js",
+    entry: "src/index.ts",
   },
 
   destination: "dist",
@@ -50,9 +58,25 @@ async function build(config) {
             return fsp.cp(source, config.destination + `/` + destination, { recursive: true });
         }));
     }
-    if (config.typescript) {
+    let releaseTsConfigExists = fs.existsSync(`tsconfig.release.json`);
+    if (config.typescript && config.esbuild == null) {
         console.log(`  Compiling...`);
-        tasks.push(spawnAsync(`tsc`, [`--build`, (config.release ? `tsconfig.release.json` : `tsconfig.json`)], { stdio: `inherit` })
+        tasks.push(spawnAsync(`tsc`, [`--build`, (config.release && releaseTsConfigExists ? `tsconfig.release.json` : `tsconfig.json`)], { stdio: `inherit` })
+            .then(exitCode => exitCode !== 0 ? Promise.reject() : Promise.resolve()));
+    }
+    if (config.esbuild != null) {
+        let options = [
+            config.esbuild.entry,
+            `--bundle`,
+            `--outfile=${config.destination}/${config.esbuild.outfile}`,
+            `--log-level=warning`
+        ];
+        if (config.typescript)
+            options.push(config.release && releaseTsConfigExists ? `--tsconfig=tsconfig.release.json` : `--tsconfig=tsconfig.json`);
+        if (!config.release)
+            options.push(`--sourcemap`);
+        console.log(`  Bundling...`);
+        tasks.push(spawnAsync(`esbuild`, options, { stdio: `inherit` })
             .then(exitCode => exitCode !== 0 ? Promise.reject() : Promise.resolve()));
     }
     try {
@@ -65,7 +89,7 @@ async function build(config) {
         else
             throw e;
     }
-    let outFile = config.tsconfig[`compilerOptions`]?.[`outFile`];
+    let outFile = config.tsconfig?.[`compilerOptions`]?.[`outFile`];
     if (config.main && config.typescript && outFile != null) {
         const mainInvoke = `\nif (typeof main === "function") main(); // Build.js auto-generated`;
         let content = await fsp.readFile(outFile);
@@ -84,7 +108,7 @@ async function clean(config) {
     let tasks = [];
     if (!config.release)
         return;
-    if (config.typescript) {
+    if (config.typescript && !config.esbuild) {
         tasks.push(spawnAsync(`tsc`, [`--build`, `--clean`, `tsconfig.json`], { stdio: `inherit` }), spawnAsync(`tsc`, [`--build`, `--clean`, `tsconfig.release.json`], { stdio: `inherit` }));
     }
     tasks.push(fsp.rm(config.destination, { recursive: true, force: true }));
@@ -104,7 +128,7 @@ async function main() {
     console.time(`Elapsed`);
     console.log(`Build.js`);
     try {
-        if (CONFIG == null)
+        if (typeof CONFIG === `undefined`)
             throw new BuildError(`Build config is not defined.`);
         CONFIG.destination ??= ``;
         CONFIG.includes ??= [];
@@ -117,7 +141,7 @@ async function main() {
             CONFIG.package = JSON.parse(fs.readFileSync(`package.json`).toString());
         }
         else
-            CONFIG.npm = false;
+            CONFIG.npm ??= false;
         let args = process.argv.slice(2);
         CONFIG.options = args.filter(arg => !arg.startsWith(`-`));
         CONFIG.parameters = args.filter(arg => arg.startsWith(`-`));
@@ -128,8 +152,8 @@ async function main() {
             CONFIG.tsconfig = JSON.parse(fs.readFileSync(`tsconfig.json`).toString());
         }
         else
-            CONFIG.typescript = false;
-        CONFIG.main ??= true;
+            CONFIG.typescript ??= false;
+        CONFIG.main ??= (!CONFIG.esbuild ? true : false);
         console.log(`Building`
             + (CONFIG.configuration != null ? ` configuration '${CONFIG.configuration}'`
                 : ` without configuration`)

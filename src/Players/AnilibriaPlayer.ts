@@ -1,6 +1,8 @@
-/// <reference path="Player.ts" />
+import * as MALibriaApi from "../MALibriaApi";
 
-class AnilibriaPlayer extends PlayerBase
+import {PlayerBase} from "./PlayerBase";
+
+export class AnilibriaPlayer extends PlayerBase
 {
   private _url = ``;
 
