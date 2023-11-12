@@ -1,6 +1,6 @@
 /// <reference path="Player.ts" />
 
-class DummyPlayer extends Player
+class DummyPlayer extends PlayerBase
 {
   get element() {return this._element};
   private _element = document.createElement(`div`);
@@ -12,4 +12,3 @@ class DummyPlayer extends Player
   protected async onAutoSwitchEpisodeChanged() {}
   protected async onSpeedChanged() {}
 }
-

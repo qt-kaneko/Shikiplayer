@@ -3,10 +3,10 @@ class Shikiplayer
   private _userId;
   private _animeId = -1;
 
-  private _player: Player = new DummyPlayer();
+  private _player: PlayerBase = new DummyPlayer();
   private _kodikPlayer = new KodikPlayer();
   private _anilibriaPlayer = new AnilibriaPlayer();
-  private _players: Player[] = [this._kodikPlayer, this._anilibriaPlayer];
+  private _players: PlayerBase[] = [this._kodikPlayer, this._anilibriaPlayer];
 
   private _playerBlock = this.createBlock(
     this.createOptions(),
@@ -123,7 +123,7 @@ class Shikiplayer
     localStorage[`speed`] = this._player.speed;
   }
 
-  private async changePlayer(player: Player)
+  private async changePlayer(player: PlayerBase)
   {
     this._player.element.replaceWith(player.element);
     this._player = player;

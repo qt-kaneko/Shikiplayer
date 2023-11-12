@@ -1,6 +1,6 @@
 /// <reference path="Player.ts" />
 
-class AnilibriaPlayer extends Player
+class AnilibriaPlayer extends PlayerBase
 {
   private _url = ``;
 

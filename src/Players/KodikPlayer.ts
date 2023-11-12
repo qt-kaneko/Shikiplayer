@@ -6,7 +6,7 @@ interface Message
   data: any;
 }
 
-class KodikPlayer extends Player
+class KodikPlayer extends PlayerBase
 {
   private _url = ``;
 

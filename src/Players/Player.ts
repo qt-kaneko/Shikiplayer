@@ -1,4 +1,4 @@
-abstract class Player
+abstract class PlayerBase
 {
   abstract get element(): HTMLElement;
 
