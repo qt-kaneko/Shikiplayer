@@ -25,6 +25,6 @@
 - With VSCode: Run 'Build Userscript' or 'Build Release Userscript' task.
 - With Node: Run 'node build.js userscript' or 'node build.js userscript --release'.
 
-You need Node, NPM and TSC to be installed in your environment.
+You need Node, NPM and ESBuild to be installed in your environment.
 
 > This repo is using [Build.js](https://github.com/qt-kaneko/Build.js), a smol build system.
