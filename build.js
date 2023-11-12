@@ -1,7 +1,7 @@
 const CONFIG = {
   resources: {
     name: "Shikiplayer",
-    version: "5.2.0",
+    version: "5.3.0",
     author: "Kaneko Qt",
     homepage_url: "https://github.com/qt-kaneko/Shikiplayer",
     icon: "file://assets/icons/icon128-light.png",
