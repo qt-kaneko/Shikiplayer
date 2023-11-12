@@ -75,10 +75,12 @@ async function build(config) {
             let command = `esbuild`;
             let options = [
                 config.esbuild.entry,
-                `--bundle`,
-                `--outfile=${config.destination}/${config.esbuild.outFile}`,
                 `--log-level=warning`
             ];
+            if (config.esbuild?.outFile)
+                options.push(`--bundle`, `--outfile=${config.destination}/${config.esbuild.outFile}`);
+            if (!config.esbuild?.outFile)
+                options.push(`--outdir=${config.destination}`);
             if (config.release && config.tsconfigRelease)
                 options.push(`--tsconfig=tsconfig.release.json`);
             if (!config.release && config.tsconfig)
@@ -153,7 +155,7 @@ async function main() {
         console.log(`\x1B[32mBuild succeeded.\x1B[0m`);
     }
     catch (e) {
-        if (`message` in e) {
+        if (`message` in (e ?? {})) {
             console.log();
             console.log(`\x1B[91mError: ${e.message}\x1B[0m`);
         }
@@ -184,6 +186,8 @@ async function postprocess(config) {
                 const filePrefix = `file://`;
                 if (value.startsWith(filePrefix)) {
                     let filePath = value.slice(filePrefix.length);
+                    if (!fs.existsSync(filePath))
+                        continue;
                     let fileReplacement = await fsp.readFile(filePath);
                     replacement = buffer.isUtf8(fileReplacement)
                         ? fileReplacement.toString()
@@ -230,9 +234,6 @@ async function validate(config) {
     if (config.esbuild) {
         if (config.esbuild.entry == null) {
             throw new BuildError(`Entry point was not provided for ESBuild.`);
-        }
-        if (config.esbuild.outFile == null) {
-            throw new BuildError(`Out file path was not provided for ESBuild.`);
         }
     }
     if (!(config.includes instanceof Array)) {
