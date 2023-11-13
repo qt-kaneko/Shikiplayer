@@ -45,7 +45,7 @@
     },
     {
       "label": "Publish Firefox",
-      "dependsOn": ["Build Release Firefox", "" "Archive dist Firefox", "Archive source Firefox"],
+      "dependsOn": ["Build Release Firefox", "Create publish directory", "Archive dist Firefox", "Archive source Firefox"],
       "dependsOrder": "sequence",
       "problemMatcher": []
     },
