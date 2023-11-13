@@ -1,7 +1,7 @@
 const CONFIG = {
   resources: {
     name: "Shikiplayer",
-    version: "5.3.0",
+    version: "5.3.1",
     author: "Kaneko Qt",
     homepage_url: "https://github.com/qt-kaneko/Shikiplayer",
     description: "Adds Kodik player to Shikimori website",
@@ -21,7 +21,19 @@ const CONFIG = {
 
   destination: "dist",
   includes: {
-    extension: ["LICENSE.txt", "manifest.json", "_locales", "assets/icons/icon128.png", "lib/UnwrappedWindow/inject.js"],
+    firefox: [
+      ["manifest-firefox.json", "manifest.json"],
+      "LICENSE.txt",
+      "_locales",
+      "assets/icons/icon128.png"
+    ],
+    chrome: [
+      ["manifest-chrome.json", "manifest.json"],
+      "LICENSE.txt",
+      "_locales",
+      "assets/icons/icon128.png",
+      "lib/UnwrappedWindow/inject.js"
+    ],
     userscript: ["manifest.user.js"]
   }
 };

@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+
+  "name": "$(NAME)",
+  "description": "__MSG_extensionDescription__",
+  "default_locale" : "en",
+  "icons": {"128": "./assets/icons/icon128.png"},
+  "author": "$(AUTHOR)",
+  "homepage_url": "$(HOMEPAGE_URL)",
+  "version": "$(VERSION)",
+
+  "web_accessible_resources": [
+    {
+      "resources": ["$(UNWRAPPED_WINDOW)"],
+      "matches": ["*://kodik.info/*"]
+    }
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["*://shikimori.me/*", "*://shikimori.one/*", "*://kodik.info/*"],
+      "all_frames": true,
+      "js": ["Shikiplayer.js"],
+      "run_at": "document_end"
+    }
+  ]
+}

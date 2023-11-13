@@ -2,10 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build Extension",
+      "label": "Build Firefox",
       "type": "process",
       "command": "node",
-      "args": ["build.js", "extension"],
+      "args": ["build.js", "firefox"],
       "group": {"kind": "build"},
       "problemMatcher": [],
       "presentation": {
@@ -14,16 +14,40 @@
       }
     },
     {
-      "label": "Build Release Extension",
+      "label": "Build Release Firefox",
       "type": "process",
       "command": "node",
-      "args": ["build.js", "extension", "--release"],
+      "args": ["build.js", "firefox", "--release"],
       "group": {"kind": "build"},
       "problemMatcher": [],
       "presentation": {
         "reveal": "silent",
         "clear": true
       }
+    },
+    {
+      "label": "Create publish directory",
+      "type": "process",
+      "command": "mkdir",
+      "args": ["publish"]
+    },
+    {
+      "label": "Archive dist Firefox",
+      "type": "process",
+      "command": "zip",
+      "args": ["-r", "publish/dist.zip", "dist", "-x", "*.DS_Store"]
+    },
+    {
+      "label": "Archive source Firefox",
+      "type": "process",
+      "command": "zip",
+      "args": ["-r", "publish/Shikiplayer.zip", ".", "-x", "*.DS_Store", "dist/*", "publish/*"]
+    },
+    {
+      "label": "Publish Firefox",
+      "dependsOn": ["Build Release Firefox", "" "Archive dist Firefox", "Archive source Firefox"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
     },
 
     {
@@ -43,6 +67,31 @@
       "type": "process",
       "command": "node",
       "args": ["build.js", "userscript", "--release"],
+      "group": {"kind": "build"},
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+
+    {
+      "label": "Build Chrome",
+      "type": "process",
+      "command": "node",
+      "args": ["build.js", "chrome"],
+      "group": {"kind": "build"},
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+    {
+      "label": "Build Release Chrome",
+      "type": "process",
+      "command": "node",
+      "args": ["build.js", "chrome", "--release"],
       "group": {"kind": "build"},
       "problemMatcher": [],
       "presentation": {

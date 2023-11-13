@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
 
   "name": "$(NAME)",
   "description": "__MSG_extensionDescription__",
@@ -13,12 +13,11 @@
     "gecko": {"id": "{e6624e6b-2351-4a1d-b7b7-c714fffee424}"}
   },
 
-  "web_accessible_resources": [
-    {
-      "resources": ["$(UNWRAPPED_WINDOW)"],
-      "matches": ["*://kodik.info/*"]
-    }
+  "permissions": [
+    "*://kodikapi.com/*",
+    "*://raw.githubusercontent.com/*"
   ],
+
   "content_scripts": [
     {
       "matches": ["*://shikimori.me/*", "*://shikimori.one/*", "*://kodik.info/*"],
