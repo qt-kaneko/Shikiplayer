@@ -2,6 +2,25 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Create publish directory",
+      "type": "process",
+      "command": "mkdir",
+      "args": ["publish"]
+    },
+    {
+      "label": "Archive dist",
+      "type": "process",
+      "command": "zip",
+      "args": ["-r", "publish/dist.zip", "dist", "-x", "*.DS_Store"]
+    },
+    {
+      "label": "Archive source",
+      "type": "process",
+      "command": "zip",
+      "args": ["-r", "publish/Shikiplayer.zip", ".", "-x", "*.DS_Store", "dist/*", "publish/*"]
+    },
+
+    {
       "label": "Build Firefox",
       "type": "process",
       "command": "node",
@@ -26,26 +45,8 @@
       }
     },
     {
-      "label": "Create publish directory",
-      "type": "process",
-      "command": "mkdir",
-      "args": ["publish"]
-    },
-    {
-      "label": "Archive dist Firefox",
-      "type": "process",
-      "command": "zip",
-      "args": ["-r", "publish/dist.zip", "dist", "-x", "*.DS_Store"]
-    },
-    {
-      "label": "Archive source Firefox",
-      "type": "process",
-      "command": "zip",
-      "args": ["-r", "publish/Shikiplayer.zip", ".", "-x", "*.DS_Store", "dist/*", "publish/*"]
-    },
-    {
       "label": "Publish Firefox",
-      "dependsOn": ["Build Release Firefox", "Create publish directory", "Archive dist Firefox", "Archive source Firefox"],
+      "dependsOn": ["Build Release Firefox", "Create publish directory", "Archive dist", "Archive source"],
       "dependsOrder": "sequence",
       "problemMatcher": []
     },
@@ -98,6 +99,12 @@
         "reveal": "silent",
         "clear": true
       }
-    }
+    },
+    {
+      "label": "Publish Chrome",
+      "dependsOn": ["Build Release Chrome", "Create publish directory", "Archive dist"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
   ]
 }
