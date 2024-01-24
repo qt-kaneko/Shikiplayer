@@ -1,5 +1,7 @@
 import * as KodikApi from "../KodikApi";
 
+import {unwrappedWindow} from "../../lib/UnwrappedWindow/UnwrappedWindow";
+
 import {PlayerBase} from "./PlayerBase";
 
 interface Message
@@ -43,7 +45,7 @@ export class KodikPlayer extends PlayerBase
     let player = document.querySelector<HTMLVideoElement>(`video`) ?? undefined;
     if (player == null)
     {
-      awaitPlayer = new Promise(r =>
+      awaitPlayer = new Promise(resolve =>
         new MutationObserver((mutations, observer) => {
           if (mutations.flatMap(mutation => mutation.addedNodes).length === 0) return;
 
@@ -51,7 +53,7 @@ export class KodikPlayer extends PlayerBase
           if (player == null) return;
 
           observer.disconnect();
-          r();
+          resolve();
         }).observe(document.documentElement, {childList: true, subtree: true})
       );
     }
@@ -110,13 +112,13 @@ export class KodikPlayer extends PlayerBase
       }
     });
 
-    this._awaitPort = new Promise(r =>
+    this._awaitPort = new Promise(resolve =>
       window.addEventListener(`message`, (ev) => {
         if (ev.data !== `shikiplayer`) return;
 
         this._port = ev.ports[0];
 
-        r();
+        resolve();
       })
     );
   }
@@ -182,5 +184,3 @@ export class KodikPlayer extends PlayerBase
   }
   protected async onSpeedChanged() {}
 }
-
-import { unwrappedWindow } from "../../lib/UnwrappedWindow/UnwrappedWindow";

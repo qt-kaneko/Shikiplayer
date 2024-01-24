@@ -3,6 +3,8 @@ import * as Shikimori from "./Shikimori";
 import * as ShikimoriApi from "./ShikimoriApi";
 import {ShikiplayerData} from "./ShikiplayerData";
 
+const html = String.raw;
+
 export class Shikiplayer
 {
   private _userId;
@@ -11,12 +13,16 @@ export class Shikiplayer
   private _player: Players.PlayerBase = new Players.DummyPlayer();
   private _kodikPlayer = new Players.KodikPlayer();
   private _anilibriaPlayer = new Players.AnilibriaPlayer();
-  private _players: Players.PlayerBase[] = [this._kodikPlayer, this._anilibriaPlayer];
+  private _players: Players.PlayerBase[] = [
+    this._kodikPlayer,
+    this._anilibriaPlayer
+  ];
 
   private _playerBlock = this.createBlock(
     this.createOptions(),
     this.createHeadline(),
-    this._player.element
+    this._player.element,
+    this.createFooter(),
   );
 
   private _episodeEnded = false;
@@ -75,9 +81,38 @@ export class Shikiplayer
 
     await this.changePlayer(this._kodikPlayer);
 
+    document.querySelector(`.b-db_entry .b-user_rate`)!
+            .addEventListener(`click`, () => this.statusChanged());
+
     console.debug(`[Shikiplayer] (View changed) Anime ID: ${this._animeId}` +
                                              `, Current Episode: ${currentEpisode}` +
                                              `, User Rate:`, userRate);
+  }
+
+  private async statusChanged()
+  {
+    if (this._userId == null) return;
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    let userRate = await ShikimoriApi.getUserRate(this._animeId) ?? {episodes: 0, status: ``};
+    if (userRate.status !== `watching` && userRate.status !== `rewatching`)
+    {
+      console.debug(`[Shikiplayer] (Status Changed) Anime is not in (re)watching list, doing nothing ¯\\_(ツ)_/¯`);
+      return;
+    }
+
+    let data = new ShikiplayerData();
+    data.episodeTime = this._player.episodeTime;
+    data.translation = this._player.translation;
+
+    userRate.status = (userRate.status === `rewatching`) ? `rewatching` : `watching`;
+    userRate.episodes = this._episodeEnded ? this._player.episode : (this._player.episode - 1);
+    userRate.text = data.save(userRate.text ?? ``);
+
+    ShikimoriApi.setUserRate(this._animeId, this._userId, userRate);
+
+    console.debug(`[Shikiplayer] (Paused) Saved time: ${this._player.episodeTime}s`);
   }
 
   private async paused()
@@ -86,11 +121,17 @@ export class Shikiplayer
 
     if (this._episodeEnded) return;
 
+    let userRate = await ShikimoriApi.getUserRate(this._animeId) ?? {episodes: 0, status: ``};
+    if (userRate.status !== `watching` && userRate.status !== `rewatching`)
+    {
+      console.debug(`[Shikiplayer] (Paused) Anime is not in (re)watching list, doing nothing ¯\\_(ツ)_/¯`);
+      return;
+    }
+
     let data = new ShikiplayerData();
     data.episodeTime = this._player.episodeTime;
     data.translation = this._player.translation;
 
-    let userRate = await ShikimoriApi.getUserRate(this._animeId) ?? {episodes: 0, status: ``};
     userRate.status = (userRate.status === `rewatching`) ? `rewatching` : `watching`;
     userRate.episodes = this._player.episode - 1;
     userRate.text = data.save(userRate.text ?? ``);
@@ -108,11 +149,17 @@ export class Shikiplayer
       if (this._episodeEnded) return;
       this._episodeEnded = true;
 
+      let userRate = await ShikimoriApi.getUserRate(this._animeId) ?? {episodes: 0, status: ``};
+      if (userRate.status !== `watching` && userRate.status !== `rewatching`)
+      {
+        console.debug(`[Shikiplayer] (Episode Time Changed) Anime is not in (re)watching list, doing nothing ¯\\_(ツ)_/¯`);
+        return;
+      }
+
       let data = new ShikiplayerData();
       data.episodeTime = 0;
       data.translation = this._player.translation;
 
-      let userRate = await ShikimoriApi.getUserRate(this._animeId) ?? {episodes: 0, status: ``};
       userRate.status = (userRate.status === `rewatching`) ? `rewatching` : `watching`;
       userRate.episodes = this._player.episode;
       userRate.text = data.save(userRate.text ?? ``);
@@ -145,9 +192,8 @@ export class Shikiplayer
     options.appendChild(kodik);
 
     let anilibria = document.createElement(`a`);
-    anilibria.text = `Anilibria`;
+    anilibria.text = `Anilibria (beta)`;
     anilibria.onclick = (ev) => this.changePlayer(this._anilibriaPlayer);
-
     this._anilibriaPlayer.existsChanged = async () => {
       if (this._anilibriaPlayer.exists) options.appendChild(anilibria);
       else anilibria.remove();
@@ -168,6 +214,8 @@ export class Shikiplayer
       {
         clicks = 0;
         alert(`Shikiplayer version is $(VERSION)`);
+
+        document.querySelector(`#release-notes`)!.innerHTML = `- Обновлены трапы<br/>- Больше трапов<br/>- Трапы`;
       }
 
       headline.dataset[`clicks`] = clicks.toString();
@@ -175,14 +223,34 @@ export class Shikiplayer
 
     return headline;
   }
-  private createBlock(options: HTMLElement, headline: HTMLElement, player: HTMLElement)
+  private createBlock(options: HTMLElement, headline: HTMLElement, player: HTMLElement, footer: HTMLElement)
   {
     let block = document.createElement(`div`);
     block.className = `block`;
     block.appendChild(options);
     block.appendChild(headline);
     block.appendChild(player);
+    block.appendChild(footer);
 
     return block;
+  }
+  private createFooter()
+  {
+    let htmlString = html`
+      <div style="display: flex; flex-direction: row; padding: 10px 0; border-top: 1px dashed rgb(73, 77, 80); border-bottom: 1px dashed rgb(73, 77, 80); margin-top: 15px;">
+        <span id="release-notes">
+          <span class="b-link" style="font-weight: 600;">Обновление плеера</span>
+          <span id="version" style="margin-left: 4px; color: rgb(161, 153, 140); font-size: 11px;">$(VERSION)</span><br/>
+          ${`$(RELEASE_NOTES)`.replaceAll(`\n`, `<br/>`)}
+        </span>
+        <a class="b-button" href="https://www.buymeacoffee.com/qt.kaneko" style="margin-left: auto; align-self: start; min-width: fit-content;">$ Поблагодарить разработчика</a>
+      </div>
+    `;
+
+    let parser = document.createElement(`div`);
+    parser.innerHTML = htmlString;
+
+    let element = parser.firstElementChild as HTMLElement;
+    return element;
   }
 }
