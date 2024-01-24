@@ -237,7 +237,7 @@ export class Shikiplayer
   private createFooter()
   {
     let htmlString = html`
-      <div style="display: flex; flex-direction: row; padding: 10px 0; border-top: 1px dashed rgb(73, 77, 80); border-bottom: 1px dashed rgb(73, 77, 80); margin-top: 15px;">
+      <div style="display: flex; flex-wrap: wrap; flex-direction: row; padding: 10px 0; border-top: 1px dashed rgb(73, 77, 80); border-bottom: 1px dashed rgb(73, 77, 80); margin-top: 15px;">
         <span id="release-notes">
           <span class="b-link" style="font-weight: 600;">Обновление плеера</span>
           <span id="version" style="margin-left: 4px; color: rgb(161, 153, 140); font-size: 11px;">$(VERSION)</span><br/>
