@@ -1,7 +1,7 @@
 const CONFIG = {
   resources: {
     name: "Shikiplayer",
-    version: "5.3.1",
+    version: "5.4.0",
     author: "Kaneko Qt",
     homepage_url: "https://github.com/qt-kaneko/Shikiplayer",
     description: "Adds Kodik player to Shikimori website",
