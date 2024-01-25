@@ -5,18 +5,6 @@
 ### Beautiful design:
 ![image](./assets/screenshots/1.png?raw=true)
 
-### Quick releases:
-![image](./assets/screenshots/2.png?raw=true)
-
-### Many voiceovers:
-![image](./assets/screenshots/3.png?raw=true)
-
-### High quality:
-![image](./assets/screenshots/4.png?raw=true)
-
-### Useful settings:
-![image](./assets/screenshots/5.png?raw=true)
-
 ## How to build
 ### To build extension:
 - With VSCode: Run 'Build Extension' or 'Build Release Extension' task.

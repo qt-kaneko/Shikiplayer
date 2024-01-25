@@ -215,7 +215,7 @@ export class Shikiplayer
         clicks = 0;
         alert(`Shikiplayer version is $(VERSION)`);
 
-        document.querySelector(`#release-notes`)!.innerHTML = `- Обновлены трапы<br/>- Больше трапов<br/>- Трапы`;
+        document.querySelector<HTMLElement>(`#release-notes`)!.innerText = `- Обновлены трапы\n- Больше трапов\n- Трапы`;
       }
 
       headline.dataset[`clicks`] = clicks.toString();
