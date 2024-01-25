@@ -11,7 +11,7 @@
       "label": "Archive dist",
       "type": "process",
       "command": "zip",
-      "args": ["-r", "publish/dist.zip", "dist", "-x", "*.DS_Store"]
+      "args": ["-r", "publish/dist.zip", "./dist/*", "-x", "*.DS_Store"]
     },
     {
       "label": "Archive source",
@@ -46,7 +46,7 @@
     },
     {
       "label": "Publish Firefox",
-      "dependsOn": ["Build Release Firefox", "Create publish directory", "Archive dist", "Archive source"],
+      "dependsOn": ["Build Release Firefox", "Create publish directory", "Archive source"],
       "dependsOrder": "sequence",
       "problemMatcher": []
     },

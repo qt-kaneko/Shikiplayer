@@ -236,21 +236,58 @@ export class Shikiplayer
   }
   private createFooter()
   {
-    let htmlString = html`
-      <div style="display: flex; flex-wrap: wrap; flex-direction: row; padding: 10px 0; border-top: 1px dashed rgb(73, 77, 80); border-bottom: 1px dashed rgb(73, 77, 80); margin-top: 15px;">
-        <span id="release-notes">
-          <span class="b-link" style="font-weight: 600;">Обновление плеера</span>
-          <span id="version" style="margin-left: 4px; color: rgb(161, 153, 140); font-size: 11px;">$(VERSION)</span><br/>
-          ${`$(RELEASE_NOTES)`.replaceAll(`\n`, `<br/>`)}
-        </span>
-        <a class="b-button" href="https://www.buymeacoffee.com/qt.kaneko" style="margin-left: auto; align-self: start; min-width: fit-content;">$ Поблагодарить разработчика</a>
-      </div>
+    let div = document.createElement(`div`);
+    div.style.cssText = `
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      padding: 10px 0;
+      border-top: 1px dashed rgb(73, 77, 80);
+      border-bottom: 1px dashed rgb(73, 77, 80);
+      margin-top: 15px;
     `;
 
-    let parser = document.createElement(`div`);
-    parser.innerHTML = htmlString;
+    let releaseNotesSpan = document.createElement(`span`);
+    releaseNotesSpan.id = `release-notes`;
+    div.appendChild(releaseNotesSpan);
 
-    let element = parser.firstElementChild as HTMLElement;
-    return element;
+    let playerUpdateSpan = document.createElement(`span`);
+    playerUpdateSpan.className = `b-link`;
+    playerUpdateSpan.style.cssText = `
+      font-weight: 600;
+    `;
+    playerUpdateSpan.innerText = `Обновление плеера`;
+    releaseNotesSpan.appendChild(playerUpdateSpan);
+
+    let versionSpan = document.createElement(`span`);
+    versionSpan.id = `version`;
+    versionSpan.innerText = `$(VERSION)`;
+    versionSpan.style.cssText = `
+      margin-left: 4px;
+      color: rgb(161, 153, 140);
+      font-size: 11px;
+    `;
+    releaseNotesSpan.appendChild(versionSpan);
+
+    releaseNotesSpan.appendChild(document.createElement(`br`));
+
+    for (let line of `$(RELEASE_NOTES)`.split(`\n`))
+    {
+      releaseNotesSpan.append(line);
+      releaseNotesSpan.appendChild(document.createElement(`br`));
+    }
+
+    let donateA = document.createElement(`a`);
+    donateA.className = `b-button`;
+    donateA.href = `https://www.buymeacoffee.com/qt.kaneko`;
+    donateA.style.cssText = `
+      margin-left: auto;
+      align-self: start;
+      min-width: fit-content;
+    `;
+    donateA.innerText = `$ Поблагодарить разработчика`;
+    div.appendChild(donateA);
+
+    return div;
   }
 }
