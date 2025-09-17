@@ -148,8 +148,8 @@ export class KodikPlayer extends PlayerBase
 
   protected async onAnimeIdChanged()
   {
-    let urls = await KodikApi.search(this._animeId);
-    this._url = urls.find(r => r.translation.id === this.translation)?.link ?? urls[0].link;
+    let result = await KodikApi.getPlayer(this._animeId);
+    this._url = result.link;
 
     this.rebuildIframeSrc();
   }
@@ -163,8 +163,8 @@ export class KodikPlayer extends PlayerBase
   }
   protected async onTranslationChanged()
   {
-    let urls = await KodikApi.search(this._animeId);
-    this._url = urls.find(r => r.translation.id === this.translation)?.link ?? urls[0].link;
+    let result = await KodikApi.getPlayer(this._animeId);
+    this._url = result.link;
 
     this.rebuildIframeSrc();
   }

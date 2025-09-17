@@ -1,16 +1,13 @@
 const CONFIG = {
   resources: {
     name: "Shikiplayer",
-    version: "5.4.1",
+    version: "6.0.11",
     author: "Kaneko Qt",
     homepage_url: "https://github.com/qt-kaneko/Shikiplayer",
     description: "Adds Kodik player to Shikimori website",
     description_ru: "Добавляет плеер Kodik на сайт Shikimori",
     release_notes: 
-`- Добавление аниме в "Смотрю" и "Пересматриваю" нужно делать вручную.
-- Время просмотра и эпизод сохраняются только если аниме находится в "Смотрю" или "Пересматриваю".
-- Добавлена секция со списком изменений под плеером.
-- Добавлена кнопка для пожертвований под плеером.
+`- Починен kodik плеер
 `,
 
     unwrapped_window: "lib/UnwrappedWindow/inject.js",

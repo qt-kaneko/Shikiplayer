@@ -1,8 +1,8 @@
 import {Response} from "./Response";
 
-export async function search(animeId: number)
+export async function getPlayer(animeId: number)
 {
-  let url = `https://kodikapi.com/search`
+  let url = `https://kodikapi.com/get-player`
           + `?token=$(KODIK_TOKEN)`
           + `&shikimori_id=${animeId}`;
 
@@ -10,5 +10,5 @@ export async function search(animeId: number)
   let responseText = await response.text();
   let responseContent = <Response>JSON.parse(responseText);
 
-  return responseContent.results;
+  return responseContent;
 }

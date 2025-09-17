@@ -1,6 +1,8 @@
-import {Result} from "./Result";
-
 export type Response =
-{
-  results: Result[];
-};
+  {
+    "found": boolean;
+    "allowed": boolean;
+    "quality": string;
+    "translation": string;
+    "link": string;
+  };
