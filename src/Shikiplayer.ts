@@ -29,7 +29,7 @@ export class Shikiplayer
 
   constructor()
   {
-    if (!/shikimori/.test(location.hostname)) return;
+    if (!/shiki/.test(location.hostname)) return;
 
     this._userId = Shikimori.getUserId();
     console.debug(`[Shikiplayer] (Starting) User ID:`, this._userId);

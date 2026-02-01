@@ -18,7 +18,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://shikimori.me/*", "*://shikimori.one/*", "*://kodik.info/*"],
+      "matches": ["*://shikimori.me/*", "*://shikimori.one/*", "*://shiki.one/*", "*://kodik.info/*"],
       "all_frames": true,
       "js": ["Shikiplayer.js"],
       "run_at": "document_end"
