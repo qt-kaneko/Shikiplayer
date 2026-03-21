@@ -14,6 +14,7 @@
 // @downloadURL     https://github.com/qt-kaneko/Shikiplayer/releases/latest/download/manifest.user.js
 //
 // @match           *://shikimori.me/*
+// @match           *://shikimori.io/*
 // @match           *://shikimori.one/*
 // @match           *://kodik.info/*
 //
